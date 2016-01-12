@@ -56,11 +56,11 @@ the information which all the hosts provide within their [Discovery Manifest
 files][discovery-api], and these changes MUST be reflected in the registry
 response.
 
-The major advantage of such automatic updating is that all the partners *do not
-need* to contact the registry maintainer in order to change their Registry
-entries. Many operations (such as changing the server certificate, or adding a
-new HEI to a host) can be performed simply by updating the manifest on **the
-partner's** server (and the Registry will fetch these changes automatically).
+The major advantage of such automatic updating is that the partners *do not
+need* to contact the registry maintainer when they want to change some of their
+Registry entries. Most changes in the registry can performed simply by updating
+the manifest on **the partner's** server (and the Registry will fetch these
+changes automatically).
 
 
 ### Requirements for the Clients
@@ -84,20 +84,17 @@ partner's** server (and the Registry will fetch these changes automatically).
  * The Registry response MUST be accompanied by a proper HTTP `Cache-Control`
    and `Expires` headers.
 
- * The Registry Server MUST follow the *Host->Host* security policy (described
-   below) when accessing the manifest files, that is, it MUST access these
-   manifests with HTTPS protocol and require them to be signed using one of
-   the *previously* known certificates (see also the [updating certificates]
-   (https://github.com/erasmus-without-paper/ewp-specs-api-discovery/blob/master/README.md#updating-certificates)
-   section of the Discovery Manifest specification).
+ * The Registry Server MUST verify the SSL server certificates when it fetches
+   the Manifest files from EWP Hosts.
 
- * The Registry Server SHOULD validate manifest files before importing them.
-   If the manifest fails validation, the server SHOULD notify the administrator
-   of the host which serves the invalid manifest OR a human maintainer of the
-   Registry Server, so that the problem will be noticed.
+ * The Registry Server MUST validate the manifest files before importing them.
+   If the manifest fails validation, the server MUST NOT import any new changes
+   and it SHOULD notify the administrator of the Host which serves the invalid
+   manifest OR a human maintainer of the Registry Server, so that the problem
+   will be noticed.
 
  * The Registry MUST recognize and support the latest version of the
-   Manifest file (immediatelly after it is released).
+   Manifest file (immediately after it is released).
 
 
 ### Response format
@@ -114,7 +111,6 @@ The response MUST conform to the XML Schema provided in the attached
 
 *WRTODO: To be determined.*
 
-<!-- WRTODO: include registry certificate here -->
 <!-- WRTODO: Backup domain? -->
 
 
@@ -209,54 +205,92 @@ Security
 
 ### SSL Certificates
 
-Each EWP Host declares a list of X.509 Certificates which it will use for
-communication with other hosts (it does so be including them in its Manifest
-file). The list MUST contain at least one certificate (and often will contain
-just one), but it MAY contain an unlimited number of them.
+There are two types of certificates which all implementers must be aware of:
 
-The list of all certificates in use can be acquired from the EWP Registry.
+ * **Server certificates** are used by the Host when it **responds** to API
+   requests.
+
+ * **Client certificates** are used to **issue requests** within the EWP
+   Network.
+
+Implementers MAY use the same certificate for both purposes, but it is NOT
+REQUIRED.
+
+
+### Server certificates
+
+These are just "regular" SSL certificates, bound to a domain.
+
+All our APIs MUST be served via the HTTPS protocol and protected by a
+certificate bound to the proper domain. This allows the clients to verify that
+the responses come from the proper source.
+
+
+### Client certificates
+
+Each EWP Host declares a list certificates it will use for making requests to
+other hosts. It does so by including acceptable domain names and/or specific
+X.509 certificates in its Manifest file (review the Manifest's XSD file for
+details). This list will often contain just one or two domain entries, but it
+MAY also contain an unlimited number **self-signed** certificates.
+
+This setup has some advantages:
+
+ * During development stages, it allows developers to generate their own
+   certificates and install them in their browsers for debugging purposes.
+
+ * In production environments, it facilitates the usage of EWP Network, its
+   Registry and Manifest files in **other** projects (unrelated to EWP). Such
+   projects will most probably serve their APIs (and clients) on other domains.
+   (It also allows EWP APIs to be hosted across multiple servers.)
+
+The list of allowed domains and certificates in use can be acquired from the
+EWP Registry.
 
 
 ### Should I verify *all* requests?
 
-No.
-
-EWP Hosts MAY use the certificates provided by the Registry to verify if the
-request came from within the EWP Network, but *in some cases* they SHOULD NOT
-deny access to requests from *outside* the network.
+No. Just some.
 
 Every API defines its own security requirements. In most cases it *will* be
 REQUIRED for the EWP Host to verify its requester, but in some other cases
 (e.g. the Discovery Manifest API) it will be the opposite - some requests MUST
-be allowed to be performed by **anonymous** requesters.
+be allowed to be performed by **anonymous** requesters (with no client
+certificate).
+
+When verifying client certificates, you MUST match them against all the domains
+and certificates published in the EWP Registry (review the Registry's XSD for
+details).
 
 
 ### Should I verify *all* responses?
 
-Yes - it is RECOMMENDED for all EWP Clients to verify that the response comes
-from a trusted source.
+Yes.
+
+It is RECOMMENDED for all EWP Clients to verify the SSL server certificates
+when retrieving responses from other EWP Hosts. Use the "regular" SSL
+verification - you do not need to compare certificates with the lists
+provided by the Registry as EWP Servers do - you simply need to check if the
+server's certificate was signed by a trusted CA.
 
 
-### Popular Security Policies
+### Example Security Policies
 
-Hereby we define some basic terms which describe some common security policies
-used within the API specifications.
+Every API specifies its own security policy. Here are some examples of common
+policies.
 
-These policies should be sufficient for most of the APIs. You will need to
-consult the documentation of a specific API in order to determine which
-security policy is required in which case.
+ * **Anonymous access**: The request can be made by anyone. The client does not
+   need to use any SSL certificate.
 
- * **Anonymous->Host**: The request can be made by anyone, e.g. via a web
-   browser. The client (requester) does not need to use any SSL certificate.
+ * **Access to anyone from within the EWP Network**: Client certificate is
+   required. The server needs to verify if the client's request was signed by
+   *any* of the certificates *or* domains listed in the EWP Registry.
 
- * **Network->Host**: Access from within the EWP Network. Client certificate is
-   required. The server needs to verify if the client request was signed by ANY
-   of the certificates listed in the EWP Registry (all EWP Hosts can access
-   this resource).
-
- * **Host->Host**: Access to a specific EWP Host. Requests MUST be signed by a
-   certificate of a single, specific EWP Host. Other EWP Hosts MUST NOT be able
-   to access the resource.
+ * **Access to a single EWP Host which covers a specific HEI**: Requests
+   MUST be signed by a certificate of a single, specific EWP Host. Other EWP
+   Hosts MUST NOT be able to access the resource. (This will probably be the
+   most common policy across EWP APIs, as the project focuses on exchanging
+   data between HEIs.)
 
 
 <a name='backward-compatibility-rules'></a>
