@@ -65,7 +65,9 @@ partner's** server (and the Registry will fetch these changes automatically).
 
 ### Requirements for the Clients
 
- * All clients SHOULD cache the registry responses.
+ * All clients SHOULD cache the registry responses. (Note, that all APIs SHOULD
+   be backward compatible after they are deployed onto production systems, so
+   caching API version numbers is quite safe).
 
  * The clients MAY use the HTTP headers returned in the Registry response to
    determine the amount of time the Registry response should be cached. They
@@ -95,7 +97,7 @@ partner's** server (and the Registry will fetch these changes automatically).
    Registry Server, so that the problem will be noticed.
 
  * The Registry MUST recognize and support the latest version of the
-   Manifest file.
+   Manifest file (immediatelly after it is released).
 
 
 ### Response format
@@ -283,6 +285,11 @@ designing, developing and accessing API methods:
    backward-compatible, as long as the default value for the newly added
    element doesn't change the method output which the older clients expect to
    receive.
+
+ * It is agreed that after an API is deployed onto production systems, all
+   changes to this API SHOULD be kept backward-compatible - new major versions
+   of such APIs SHOULD NOT be released. However, such APIs MAY become
+   [deprecated][statuses] (and new APIs MAY be released in their place).
 
 
 [discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery/blob/master/README.md
