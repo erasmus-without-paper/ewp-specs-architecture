@@ -67,9 +67,10 @@ partner's** server (and the Registry will fetch these changes automatically).
 
  * All clients SHOULD cache the registry responses.
 
- * The clients MAY use the HTTP headers to determine the amount of time the
-   Registry response should be cached. They also MAY choose their own constant
-   value for such expiry (e.g. one hour).
+ * The clients MAY use the HTTP headers returned in the Registry response to
+   determine the amount of time the Registry response should be cached. They
+   also MAY choose their own constant value for such expiry, but it MUST NOT be
+   greater than 12 hours.
 
  * The clients MAY keep the cached copy of the Registry as a backup. E.g. if
    the Registry Server cannot be contacted for some reason, a stale cached copy
@@ -132,7 +133,7 @@ In order for the HEI to benefit from the EWP Project, it needs to be placed
 within an EWP Host.
 
  * EWP Hosts are *groups of HEIs*. Host 1 **covers** institutions A, B and C,
-   while institution D is **being covered** be Host 2. Institution E is not
+   while institution D is **being covered** by Host 2. Institution E is not
    covered by any host within the EWP network.
 
  * One HEI SHOULD be covered by no more than one EWP Host.
