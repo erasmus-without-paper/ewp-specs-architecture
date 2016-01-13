@@ -1,10 +1,9 @@
-EWP Architecture
-================
+Architecture and Security
+=========================
 
 This document describes EWP Network components, establishes some common
 security measures, features, data types and vocabulary, and explains how
-partners communicate with themselves. It also describes one of the components
-in detail - **the EWP Registry**.
+partners communicate with themselves.
 
 * [What is the status of this document?][statuses]
 * [See the index of all other EWP Specifications][develhub]
@@ -36,84 +35,6 @@ For a complete list of APIs - see the [Discovery API documentation]
 [discovery-api].
 
 
-<a name="registry"></a>
-
-The EWP Registry
-----------------
-
-### Summary
-
-The registry is the only centralised part of the EWP architecture. It allows
-all EWP hosts to access the list of other EWP hosts. (It MAY also be used for
-projects unrelated to EWP, as long as these projects will be mentioned in the
-Discovery API documentation.)
-
-
-### How is it updated?
-
-The registry is being updated **automatically**. It MUSTs periodically read all
-the information which all the hosts provide within their [Discovery Manifest
-files][discovery-api], and these changes MUST be reflected in the registry
-response.
-
-The major advantage of such automatic updating is that the partners *do not
-need* to contact the registry maintainer when they want to change some of their
-Registry entries. Most changes in the registry can performed simply by updating
-the manifest on **the partner's** server (and the Registry will fetch these
-changes automatically).
-
-
-### Requirements for the Clients
-
- * All clients SHOULD cache the registry responses. (Note, that all APIs SHOULD
-   be backward compatible after they are deployed onto production systems, so
-   caching API version numbers is quite safe).
-
- * The clients MAY use the HTTP headers returned in the Registry response to
-   determine the amount of time the Registry response should be cached. They
-   also MAY choose their own constant value for such expiry, but it MUST NOT be
-   greater than 12 hours.
-
- * The clients MAY keep the cached copy of the Registry as a backup. E.g. if
-   the Registry Server cannot be contacted for some reason, a stale cached copy
-   may be used instead.
-
-
-### Requirements for the Server
-
- * The Registry response MUST be accompanied by a proper HTTP `Cache-Control`
-   and `Expires` headers.
-
- * The Registry Server MUST verify the SSL server certificates when it fetches
-   the Manifest files from EWP Hosts.
-
- * The Registry Server MUST validate the manifest files before importing them.
-   If the manifest fails validation, the server MUST NOT import any new changes
-   and it SHOULD notify the administrator of the Host which serves the invalid
-   manifest OR a human maintainer of the Registry Server, so that the problem
-   will be noticed.
-
- * The Registry MUST recognise and support the latest version of the
-   Manifest file (immediately after it is released).
-
-
-### Response format
-
-The Registry service takes no parameters. It simply returns a "static"
-response at the proper URL.
-
-The response MUST conform to the XML Schema provided in the attached
-[registry.xsd](registry.xsd) file. See [registry-example.xml]
-(registry-example.xml) for an example of a valid registry response.
-
-
-### Location
-
-*WRTODO: To be determined.*
-
-<!-- WRTODO: Backup domain? -->
-
-
 Hosts, APIs and other components
 --------------------------------
 
@@ -141,11 +62,8 @@ within an EWP Host.
 
 ![HEIs have been covered by two EWP Hosts](images/diagram-step2.png)
 
-
-### Registry
-
-We'll try to imagine an example request within the EWP Network. Let's say that
-HEI B wants to fetch some student data from the EWP Network.
+Now, let's say that HEI B wants to fetch some student data from the EWP
+Network.
 
  * HEI B **knows** the ID of the student, and it knows the ID of the home
    institution of this student. So it knows which HEI it wants to fetch the
@@ -157,10 +75,44 @@ HEI B wants to fetch some student data from the EWP Network.
  * Host 1 **does not know** which of the EWP Hosts **covers** HEI D. It doesn't
    even know if HEI D is *being covered* in the EWP Network.
 
- * Host 1 calls the EWP Registry Service. The Registry Service keeps track of
-   all the EWP Hosts and of all the HEIs covered by them. Given the Registry
-   response, Host 1 is now able to determine that it needs to contact Host 2 in
-   order to get the data.
+Host 1 needs the Registry Service in order to answer these questions.
+
+
+<a name="registry"></a>
+
+### The Registry
+
+The Registry is the only centralised part of the EWP architecture. It allows
+all EWP hosts to access the list of other EWP hosts. (It MAY also be used for
+projects unrelated to EWP, as long as these projects will be mentioned in the
+Discovery API documentation.)
+
+
+#### How is it updated?
+
+The registry is being updated **automatically**. It periodically reads all
+the information which all EWP Hosts provide within their [Discovery Manifest
+files][discovery-api], and these changes are reflected in the registry
+responses.
+
+The major advantage of such automatic updating is that the partners *do not
+need* to contact the registry maintainer when they want to change some of their
+Registry entries. Most changes in the registry can performed simply by updating
+the manifest on **the partner's** server (and the Registry will fetch these
+changes automatically).
+
+
+#### Accessing the Registry
+
+Let's continue the example use case we have started to describe earlier.
+
+**Host 1** calls the EWP Registry Service. The Registry Service keeps track
+of all the EWP Hosts and of all the HEIs covered by them. Given the Registry
+response, Host 1 is now able to determine that it needs to contact Host 2 in
+order to get the data.
+
+Detailed documentation on **how** to access the Registry is described [here]
+[registry-spec].
 
 ![Registry connects EWP Hosts with each other](images/diagram-step3.png)
 
@@ -183,6 +135,13 @@ and environments.
 
 
 ![Registry keeps track of implemented APIs](images/diagram-step4.png)
+
+**Side-note** (for geeks only): Technically speaking, the Registry Service is
+*also* an API, and it is also embedded inside its own EWP Host, like all the
+other APIs. However, Registry's *EWP Host* (not shown in a diagram above) does
+not cover any HEIs and it does not implement any other APIs (except the
+[Registry API][registry-spec]). So it's quite different from all other EWP
+Hosts.
 
 
 ### Push notifications (and broadcasting)
@@ -336,32 +295,7 @@ designing, developing and accessing API methods:
    [deprecated][statuses] (and new APIs MAY be released in their place).
 
 
-<a name="schac-identifiers"></a>
-
-SCHAC identifiers
------------------
-
-One of the fundamental features required of the EWP Network is the ability to
-uniquely identify individual HEIs. A couple of HEI identifier types are already
-in use in Europe, but only one of them - SCHAC identifier - is universal
-enough.
-
-SCHAC identifiers are quite ingenious in their simplicity. They identify HEIs
-by Internet Domain Names registered for them. E.g. `uw.edu.pl` is the SCHAC ID
-for University of Warsaw.
-
-SCHAC identifiers are obviously easy to be acquired by *a human*. We do
-acknowledge however, that its not so easy for machines. Some student
-information systems will identify external HEIs by their PIC or Erasmus codes,
-and they won't be capable to acquire SCHAC identifiers "on the fly". For this
-reason, the EWP Registry will provide a **mapping**.
-
-You will be able to use the Registry to map between PIC identifiers, Erasmus
-codes, and SCHAC IDs. The Registry will hold a database of these identifiers.
-Initially, this database will be based on Manifest files, but other sources MAY
-be used later on.
-
-
 [discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery/blob/master/README.md
 [develhub]: http://developers.erasmuswithoutpaper.eu/
 [statuses]: https://github.com/erasmus-without-paper/ewp-specs-management/blob/master/README.md#statuses
+[registry-spec]: https://github.com/erasmus-without-paper/ewp-specs-api-registry/blob/master/README.md
