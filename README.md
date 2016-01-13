@@ -43,7 +43,7 @@ The EWP Registry
 
 ### Summary
 
-The registry is the only centralized part of the EWP architecture. It allows
+The registry is the only centralised part of the EWP architecture. It allows
 all EWP hosts to access the list of other EWP hosts. (It MAY also be used for
 projects unrelated to EWP, as long as these projects will be mentioned in the
 Discovery API documentation.)
@@ -93,7 +93,7 @@ changes automatically).
    manifest OR a human maintainer of the Registry Server, so that the problem
    will be noticed.
 
- * The Registry MUST recognize and support the latest version of the
+ * The Registry MUST recognise and support the latest version of the
    Manifest file (immediately after it is released).
 
 
@@ -176,6 +176,12 @@ In order to avoid unnecessary requests, The Registry Service keeps track of all
 the implemented APIs too. Host 1 will be able to verify if the specific API has
 been implemented, and retrieve its URL from the Registry.
 
+It's worth noting that API implementations can be hosted across multiple
+servers (which might be convenient, especially if you work with multiple
+developer teams, each one of which might want to use their favourite languages
+and environments.
+
+
 ![Registry keeps track of implemented APIs](images/diagram-step4.png)
 
 
@@ -221,8 +227,10 @@ REQUIRED.
 These are just "regular" SSL certificates, bound to a domain.
 
 All our APIs MUST be served via the HTTPS protocol and protected by a
-certificate bound to the proper domain. This allows the clients to verify that
-the responses come from the proper source.
+certificate bound their domain. This allows the clients to verify that the
+responses come from the proper source.
+
+Note, that APIs can be spread across multiple domains.
 
 
 ### Client certificates
@@ -240,8 +248,11 @@ This setup has the following advantages:
 
  * In production environments, it facilitates the usage of EWP Network, its
    Registry and Manifest files in **other** projects (unrelated to EWP). Such
-   projects will most probably serve their APIs (and clients) on other domains.
-   (It also allows EWP APIs to be hosted across multiple servers.)
+   projects will most probably serve their APIs (and clients) on other domains
+   (so we need to support more than a single domain or certificate).
+ 
+ * Using domain names allows client certificates to be easily replaced by newer
+   versions when they expire. The manifest will not need to be updated.
 
 The list of allowed domains and certificates in use can be acquired from the
 EWP Registry.
