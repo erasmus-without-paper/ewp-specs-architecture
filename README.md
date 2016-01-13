@@ -209,7 +209,6 @@ There are two types of certificates which all implementers must be aware of:
 
  * **Server certificates** are used by the Host when it **responds** to API
    requests.
-
  * **Client certificates** are used to **issue requests** within the EWP
    Network.
 
@@ -234,7 +233,7 @@ X.509 certificates in its Manifest file (review the Manifest's XSD file for
 details). This list will often contain just one or two domain entries, but it
 MAY also contain an unlimited number **self-signed** certificates.
 
-This setup has some advantages:
+This setup has the following advantages:
 
  * During development stages, it allows developers to generate their own
    certificates and install them in their browsers for debugging purposes.
@@ -324,6 +323,32 @@ designing, developing and accessing API methods:
    changes to this API SHOULD be kept backward-compatible - new major versions
    of such APIs SHOULD NOT be released. However, such APIs MAY become
    [deprecated][statuses] (and new APIs MAY be released in their place).
+
+
+<a name="schac-identifiers"></a>
+
+SCHAC identifiers
+-----------------
+
+One of the fundamental features required of the EWP Network is the ability to
+uniquely identify individual HEIs. A couple of HEI identifier types are already
+in use in Europe, but only one of them - SCHAC identifier - is universal
+enough.
+
+SCHAC identifiers are quite ingenious in their simplicity. They identify HEIs
+by Internet Domain Names registered for them. E.g. `uw.edu.pl` is the SCHAC ID
+for University of Warsaw.
+
+SCHAC identifiers are obviously easy to be acquired by *a human*. We do
+acknowledge however, that its not so easy for machines. Some student
+information systems will identify external HEIs by their PIC or Erasmus codes,
+and they won't be capable to acquire SCHAC identifiers "on the fly". For this
+reason, the EWP Registry will provide a **mapping**.
+
+You will be able to use the Registry to map between PIC identifiers, Erasmus
+codes, and SCHAC IDs. The Registry will hold a database of these identifiers.
+Initially, this database will be based on Manifest files, but other sources MAY
+be used later on.
 
 
 [discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery/blob/master/README.md
