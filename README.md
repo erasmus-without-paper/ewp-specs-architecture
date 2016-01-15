@@ -84,8 +84,8 @@ Host 1 needs the Registry Service in order to answer these questions.
 
 The Registry is the only centralised part of the EWP architecture. It allows
 all EWP hosts to access the list of other EWP hosts. (It MAY also be used for
-projects unrelated to EWP, as long as these projects will be mentioned in the
-Discovery API documentation.)
+projects unrelated to EWP, as long as these projects have similar
+architectures.)
 
 
 #### How is it updated?
@@ -124,9 +124,9 @@ Host 2 covers HEI D, but this **does not necessarily mean** that Host 2 has
 implemented the API needed (or specific API *version* needed) by Host 1 in
 order to fetch the student data it needs.
 
-In order to avoid unnecessary requests, The Registry Service keeps track of all
-the implemented APIs too. Host 1 will be able to verify if the specific API has
-been implemented, and retrieve its URL from the Registry.
+In order to avoid unnecessary requests, The Registry Service keeps track of
+all the implemented APIs too. Host 1 will be able to verify if the specific API
+has been implemented, and retrieve its URL from the Registry.
 
 It's worth noting that API implementations can be hosted across multiple
 servers (which might be convenient, especially if you work with multiple
@@ -151,7 +151,7 @@ the data from it? E.g. a student has just failed an exam at B and we suspect
 that D would want to know it?
 
 Some of the APIs are **event listener APIs**. If Host 2 wants to receive such
-notifications from other hosts, he indicates that he has implemented a specific
+notifications from other hosts, it indicates that it has implemented a specific
 event listener API in its Manifest file. Now, if Host 1 is able to broadcast
 such notifications, then it asks the Registry which hosts have implemented the
 proper listeners, and posts the proper notifications at the listener URLs.
@@ -161,8 +161,6 @@ notifications (even if all other hosts implement listeners). Implementers MAY
 choose to implement only a subset of push notifications, or even not implement
 them at all. You will find more information on this in the documentation of
 specific event listener APIs.
-
-<!-- WRTODO: Examples of such APIs. -->
 
 
 Security
@@ -209,7 +207,7 @@ This setup has the following advantages:
    Registry and Manifest files in **other** projects (unrelated to EWP). Such
    projects will most probably serve their APIs (and clients) on other domains
    (so we need to support more than a single domain or certificate).
- 
+
  * Using domain names allows client certificates to be easily replaced by newer
    versions when they expire. The manifest will not need to be updated.
 
