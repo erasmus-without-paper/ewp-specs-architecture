@@ -184,7 +184,7 @@ REQUIRED.
 These are just "regular" SSL certificates, bound to a domain.
 
 All our APIs MUST be served via the HTTPS protocol and protected by a
-certificate bound their domain. This allows the clients to verify that the
+certificate bound to their domain. This allows the clients to verify that the
 responses come from the proper source.
 
 Note, that APIs can be spread across multiple domains.
@@ -192,11 +192,11 @@ Note, that APIs can be spread across multiple domains.
 
 ### Client certificates
 
-Each EWP Host declares a list certificates it will use for making requests to
-other hosts. It does so by including acceptable domain names and/or specific
+Each EWP Host declares a list of certificates it will use for making requests
+to other hosts. It does so by including acceptable domain names and/or specific
 X.509 certificates in its Manifest file (review the Manifest's XSD file for
 details). This list will often contain just one or two domain entries, but it
-MAY also contain an unlimited number **self-signed** certificates.
+MAY also contain an unlimited number of **self-signed** certificates.
 
 This setup has the following advantages:
 
