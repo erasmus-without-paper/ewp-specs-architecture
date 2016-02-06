@@ -293,7 +293,7 @@ designing, developing and accessing API methods:
    [deprecated][statuses] (and new APIs MAY be released in their place).
 
 
-[discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery/blob/master/README.md
+[discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery/blob/stable-v1/README.md
 [develhub]: http://developers.erasmuswithoutpaper.eu/
-[statuses]: https://github.com/erasmus-without-paper/ewp-specs-management/blob/master/README.md#statuses
+[statuses]: https://github.com/erasmus-without-paper/ewp-specs-management/blob/stable-v1/README.md#statuses
 [registry-spec]: https://github.com/erasmus-without-paper/ewp-specs-api-registry/blob/master/README.md
