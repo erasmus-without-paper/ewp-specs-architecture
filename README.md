@@ -249,15 +249,16 @@ policies.
  * **Anonymous access**: The request can be made by anyone. The client does not
    need to use any SSL certificate.
 
- * **Access to anyone from within the EWP Network**: Client certificate is
-   required. The server needs to verify if the client's request was signed by
-   *any* of the certificates *or* domains listed in the EWP Registry.
+ * **Access to anyone from within the EWP Network**: Clients are required to
+   use a certificate when performing requests. The certificate must match at
+   least one of the `<certificate>`s *or* `<common-name>`s listed in the EWP
+   Registry.
 
- * **Access to a single EWP Host which covers a specific HEI**: Requests
-   MUST be signed by a certificate of a single, specific EWP Host. Other EWP
-   Hosts MUST NOT be able to access the resource. (This will probably be the
-   most common policy across EWP APIs, as the project focuses on exchanging
-   data between HEIs.)
+ * **Access to a single EWP Host which covers a specific HEI**: Clients are
+   required to use a certificate when performing requests, and this certificate
+   must belong to a specific EWP Host. Other EWP Hosts will not be able to
+   access the resource. (This will probably be the most common policy across
+   EWP APIs, as the project focuses on exchanging data between HEIs.)
 
 
 <a name='backward-compatibility-rules'></a>
