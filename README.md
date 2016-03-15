@@ -97,9 +97,10 @@ responses.
 
 The major advantage of such automatic updating is that the partners *do not
 need* to contact the registry maintainer when they want to change some of their
-Registry entries. Most changes in the registry can performed simply by updating
-the manifest on **the partner's** server (and the Registry will fetch these
-changes automatically).
+Registry entries. Most changes in the registry can be performed simply by
+updating the manifest on **the partner's** server (and the Registry will fetch
+these changes automatically). This process is safer and less prone to social
+engineering attacks.
 
 
 #### Accessing the Registry
@@ -181,38 +182,49 @@ REQUIRED.
 
 ### Server certificates
 
-These are just "regular" SSL certificates, bound to a domain.
+These are just "regular" SSL certificates, that is - they are bound to your
+domain, and are signed by a trusted CA. Neither the clients nor the registry
+will be storing your server certificates.
 
-All our APIs MUST be served via the HTTPS protocol and protected by a
-certificate bound to their domain. This allows the clients to verify that the
-responses come from the proper source.
+All implemented APIs MUST be served via the HTTPS protocol and protected by
+such certificates. This allows the clients to verify that the responses come
+from the proper source.
 
-Note, that APIs can be spread across multiple domains.
+Note, that APIs can be spread across multiple domains (and all these domains
+will be referenced in the `<apis-implemented>` section of the [Manifest file]
+[discovery-api]). The number of domains used to implement EWP does not matter -
+all of them need to be protected by proper certificates though.
 
 
 ### Client certificates
 
-Each EWP Host declares a list of certificates it will use for making requests
-to other hosts. It does so by including acceptable domain names and/or specific
-X.509 certificates in its Manifest file (review the Manifest's XSD file for
-details). This list will often contain just one or two domain entries, but it
-MAY also contain an unlimited number of **self-signed** certificates.
+Each EWP Host (via its [Manifest file][discovery-api]) declares a list of
+certificates it will use for making requests to other hosts. This list if
+later fetched by registry, and the **fingerprints** of these certificates are
+served to all the EWP Network to see (see the [Registry API][registry-spec]
+for details).
 
-This setup has the following advantages:
+All of the your clients are required to use one of these client certificates
+when making requests within the EWP Network. Once the server confirms that the
+client is in possession of a proper private part of the certificate, it is able
+to identify the client's EWP Host and the HEIs it covers.
+
+This setup has many advantages:
 
  * During development stages, it allows developers to generate their own
-   certificates and install them in their browsers for debugging purposes.
+   self-signed certificates and install them in their browsers for debugging
+   purposes.
 
- * In production environments, it facilitates the usage of EWP Network, its
-   Registry and Manifest files in **other** projects (unrelated to EWP). Such
-   projects will most probably serve their APIs (and clients) on other domains
-   (so we need to support more than a single domain or certificate).
+ * Separating client and server credentials allows for better stability and
+   security of the Network. Some examples:
 
- * Using domain names allows client certificates to be easily replaced by newer
-   versions when they expire. The manifest will not need to be updated.
+   * If a single EWP Host changes its certificate, but forgets to update its
+     manifest, then only this single EWP Host will be affected.
 
-The list of allowed domains and certificates in use can be acquired from the
-EWP Registry.
+   * You may delegate handling some of your API requests directly to a third
+     party (no proxy needed), but still keep the client credentials for
+     yourself (the third party won't be able to perform requests in the EWP
+     Network unless is has control over your manifest).
 
 
 ### Should I verify *all* requests?
@@ -225,9 +237,22 @@ REQUIRED for the EWP Host to verify its requester, but in some other cases
 be allowed to be performed by **anonymous** requesters (with no client
 certificate).
 
-When verifying client certificates, you MUST match them against all the domains
-and certificates published in the EWP Registry (review the Registry's XSD for
-details).
+Here are some examples of security policies we might use:
+
+ * **Anonymous access**: The request can be made by anyone. The client does not
+   need to use any SSL certificate.
+
+ * **Access to anyone from within the EWP Network**: Clients are required to
+   use a proper certificate when performing requests.
+
+ * **Access to a single EWP Host which covers a specific HEI**: Clients are
+   required to use a proper certificate when performing requests, and this
+   certificate must belong to a specific EWP Host. Other EWP Hosts will not be
+   able to access the resource. (This will probably be the most common policy
+   across EWP APIs, as the project focuses on exchanging data between HEIs.)
+
+Also, review the [Echo API][echo-api] specs for a better explanation of the
+verification process.
 
 
 ### Should I verify *all* responses?
@@ -235,30 +260,11 @@ details).
 Yes.
 
 It is RECOMMENDED for all EWP Clients to verify the SSL server certificates
-when retrieving responses from other EWP Hosts. Use the "regular" SSL
-verification - you do not need to compare certificates with the lists
-provided by the Registry as EWP Servers do - you simply need to check if the
-server's certificate was signed by a trusted CA.
-
-
-### Example Security Policies
-
-Every API specifies its own security policy. Here are some examples of common
-policies.
-
- * **Anonymous access**: The request can be made by anyone. The client does not
-   need to use any SSL certificate.
-
- * **Access to anyone from within the EWP Network**: Clients are required to
-   use a certificate when performing requests. The certificate must match at
-   least one of the `<certificate>`s *or* `<common-name>`s listed in the EWP
-   Registry.
-
- * **Access to a single EWP Host which covers a specific HEI**: Clients are
-   required to use a certificate when performing requests, and this certificate
-   must belong to a specific EWP Host. Other EWP Hosts will not be able to
-   access the resource. (This will probably be the most common policy across
-   EWP APIs, as the project focuses on exchanging data between HEIs.)
+when retrieving responses from other EWP Hosts. You will use just the "regular"
+SSL verification (you do not need to analyze server certificates manually, as
+opposed to be client certificate verification process described above). You
+simply need to check if the server's certificate is valid (signed by a trusted
+CA).
 
 
 <a name='backward-compatibility-rules'></a>
@@ -294,7 +300,8 @@ designing, developing and accessing API methods:
    [deprecated][statuses] (and new APIs MAY be released in their place).
 
 
-[discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery/blob/stable-v1/README.md
+[discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery
 [develhub]: http://developers.erasmuswithoutpaper.eu/
 [statuses]: https://github.com/erasmus-without-paper/ewp-specs-management/blob/stable-v1/README.md#statuses
-[registry-spec]: https://github.com/erasmus-without-paper/ewp-specs-api-registry/blob/master/README.md
+[registry-spec]: https://github.com/erasmus-without-paper/ewp-specs-api-registry
+[echo-api]: https://github.com/erasmus-without-paper/ewp-specs-api-echo
