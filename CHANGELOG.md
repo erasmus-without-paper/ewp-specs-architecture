@@ -4,14 +4,16 @@ Release notes
 This document describes all the changes made to the *Architecture and Security*
 document, starting from its first released version.
 
-Next version (1.0.1? unreleased)
---------------------------------
+1.0.1
+-----
 
 * Fixed links and XML namespaces
   ([details] (https://github.com/erasmus-without-paper/general-issues/issues/4)).
 
 * Got rid of the misleading "request signing" term
   ([details] (https://github.com/erasmus-without-paper/ewp-specs-api-echo/issues/1)).
+
+* Added further clarification on server and client certificates.
 
 
 1.0.0
