@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace"
+    elementFormDefault="qualified"
+
+    targetNamespace="https://github.com/erasmus-without-paper/ewp-specs-architecture/blob/stable-v1/common-types.xsd"
+    xmlns="https://github.com/erasmus-without-paper/ewp-specs-architecture/blob/stable-v1/common-types.xsd"
+>
+    <xs:import
+        schemaLocation="http://www.w3.org/2001/03/xml.xsd"
+        namespace="http://www.w3.org/XML/1998/namespace"
+    />
+
+    <xs:annotation>
+        <xs:documentation>
+            This schema is a part of the Erasmus Without Paper project. Before you start
+            using it, make sure you have read the general rules described here:
+
+            http://developers.erasmuswithoutpaper.eu/
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:annotation>
+        <xs:documentation>
+            This file contains definitions of common types used in other EWP schemas.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType name="StringWithOptionalLang">
+        <xs:annotation>
+            <xs:documentation>
+                A string with an optional (but RECOMMENDED) xml:lang attribute. It is used in
+                places where a name of some entity can be provided in multiple languages.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute ref="xml:lang" use="optional" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="MultilineString">
+        <xs:annotation>
+            <xs:documentation>
+                This is very similar to a regular xs:string, but whenever this type is used it
+                indicates that the content MAY contain basic whitespace formatting, such us
+                line breaks and double line breaks (for splitting paragraphs). The values still
+                MUST be in plaintext though (no HTML is allowed).
+
+                Clients which process data of this type MUST respect line break when they
+                display the data to the end user (replace CRs and LFs with &lt;br&gt;s).
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="MultilineStringWithOptionalLang">
+        <xs:annotation>
+            <xs:documentation>
+                A multiline string (as defined in the MultilineString) with an optional (but
+                RECOMMENDED) xml:lang attribute. It is used in places where a description of
+                some entity can be provided in multiple languages.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="MultilineString">
+                <xs:attribute ref="xml:lang" use="optional" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="Email">
+        <xs:annotation>
+            <xs:documentation>
+                A simple pattern for email address.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[^@]+@[^\.]+\..+"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
