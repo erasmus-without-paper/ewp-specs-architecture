@@ -4,6 +4,13 @@ Release notes
 This document describes all the changes made to the *Architecture and Security*
 document, starting from its first released version.
 
+1.1.0
+-----
+
+* Error handling rules and [error-response.xsd](error-response.xsd) schema were
+  introduced ([details](https://github.com/erasmus-without-paper/ewp-specs-architecture/issues/7)).
+
+
 1.0.1
 -----
 
