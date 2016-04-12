@@ -267,6 +267,8 @@ simply need to check if the server's certificate is valid (signed by a trusted
 CA).
 
 
+<a name='error-handling'></a>
+
 Error handling rules
 --------------------
 
