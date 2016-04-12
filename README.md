@@ -267,6 +267,46 @@ simply need to check if the server's certificate is valid (signed by a trusted
 CA).
 
 
+Error handling rules
+--------------------
+
+All server implementations of all APIs MUST follow these rules whenever an
+error occurs:
+
+ * If the service is **temporarily unavailable** for some reason (like
+   maintenance), then servers MUST respond with the HTTP 5xx status
+   (**HTTP 503** preferred), and the response MAY also contain a detailed
+   description of the error in the XML format, as described in the
+   [error-response.xsd](error-response.xsd) file.
+
+ * If the client **doesn't have access** to the resource (or didn't provide his
+   credentials, i.e. SSL client certificate), then servers MUST respond with
+   the HTTP 4xx status (**HTTP 403** preferred), and the response SHOULD
+   contain a detailed description of the error in the XML format, as described
+   in the [error-response.xsd](error-response.xsd) file.
+
+ * If the client used an **inappropriate HTTP method** (e.g. GET, when only
+   POST is allowed), then servers MUST respond with the HTTP 4xx status
+   (**HTTP 405** preferred), and the response SHOULD contain a detailed
+   description of the error in the XML format, as described in the
+   [error-response.xsd](error-response.xsd) file.
+
+ * If the client provided **invalid parameters** for the request (such that do
+   not conform to the requirements of the API), then servers MUST respond with
+   the **HTTP 400** status, and the response SHOULD contain a detailed
+   description of the error in the XML format, as described in the
+   [error-response.xsd](error-response.xsd) file.
+
+ * If some other **server error** occurs while processing the request (i.e.
+   uncaught exception), then servers MUST respond with the **HTTP 500** status,
+   and the response MAY contain a detailed description of the error in the XML
+   format, as described in the [error-response.xsd](error-response.xsd) file.
+
+These rules allow the clients to determine when they are doing something wrong.
+In particular, whenever a client receives an unexpected **HTTP 4xx** error, it
+knows that there's some bug in its code which requires fixing.
+
+
 <a name='backward-compatibility-rules'></a>
 
 Backward-compatibility rules
