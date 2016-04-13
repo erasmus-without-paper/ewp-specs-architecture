@@ -83,4 +83,13 @@
             <xs:pattern value="[^@]+@[^\.]+\..+"></xs:pattern>
         </xs:restriction>
     </xs:simpleType>
+
+    <xs:complexType name="Empty">
+        <xs:annotation>
+            <xs:documentation>
+                Just a reusable empty element type, with on content nor attributes. See:
+                http://stackoverflow.com/questions/20751782/
+            </xs:documentation>
+        </xs:annotation>
+    </xs:complexType>
 </xs:schema>
