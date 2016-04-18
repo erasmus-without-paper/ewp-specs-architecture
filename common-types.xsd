@@ -49,8 +49,9 @@
                 line breaks and double line breaks (for splitting paragraphs). The values still
                 MUST be in plaintext though (no HTML is allowed).
 
-                Clients which process data of this type MUST respect line break when they
-                display the data to the end user (replace CRs and LFs with &lt;br&gt;s).
+                Clients which process data of this type SHOULD respect line breaks when they
+                display the data to the end user (e.g. replace CRs and LFs with &lt;br&gt;s
+                when rendering to HTML).
             </xs:documentation>
         </xs:annotation>
         <xs:simpleContent>
@@ -76,7 +77,12 @@
     <xs:simpleType name="Email">
         <xs:annotation>
             <xs:documentation>
-                A simple pattern for email address.
+                All elements with this type should be valid email addresses.
+
+                Please note that passing the test for the attached regex pattern does NOT imply
+                for the content to be a valid email. This pattern is extremely simplified and
+                it will reject only a couple of obvious mistakes (as opposed to serious hacking
+                attempts).
             </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
@@ -87,7 +93,7 @@
     <xs:complexType name="Empty">
         <xs:annotation>
             <xs:documentation>
-                Just a reusable empty element type, with on content nor attributes. See:
+                Just a reusable empty element type, with no content nor attributes. See:
                 http://stackoverflow.com/questions/20751782/
             </xs:documentation>
         </xs:annotation>
