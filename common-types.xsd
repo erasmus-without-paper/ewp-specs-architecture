@@ -98,4 +98,15 @@
             </xs:documentation>
         </xs:annotation>
     </xs:complexType>
+
+    <xs:simpleType name="HTTPS">
+        <xs:annotation>
+            <xs:documentation>
+                Secure (HTTPS) URL.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:anyURI">
+            <xs:pattern value="https://.+" />
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>
