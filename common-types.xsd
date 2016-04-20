@@ -124,7 +124,7 @@
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="dev-email" minOccurs="0" maxOccurs="unbounded" type="Email">
+            <xs:element ref="dev-email" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
                     <xs:documentation>
                         RECOMMENDED element. Address of a developer (or server administrator) who may
@@ -133,7 +133,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="dev-notes" minOccurs="0" type="MultilineString">
+            <xs:element ref="dev-notes" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>
                         Additional information provided by host developers for the client developers.
@@ -168,5 +168,30 @@
             </xs:simpleType>
         </xs:attribute>
     </xs:complexType>
+
+    <xs:element name="dev-email" type="Email">
+        <xs:annotation>
+            <xs:documentation>
+                Address of a developer (or server administrator) who may be contacted in case of
+                problems.
+
+                This element was placed in the common-types namespace because it is being used
+                in multiple schemas throughout the EWP project (most notably, various sections
+                of the manifest file).
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="dev-notes" type="MultilineString">
+        <xs:annotation>
+            <xs:documentation>
+                Additional information provided by administrators and/or developers.
+
+                This element was placed in the common-types namespace because it is being used
+                in multiple schemas throughout the EWP project (most notably, various sections
+                of the manifest file).
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
 
 </xs:schema>
