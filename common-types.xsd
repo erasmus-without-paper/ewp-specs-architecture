@@ -109,4 +109,64 @@
             <xs:pattern value="https://.+" />
         </xs:restriction>
     </xs:simpleType>
+
+    <xs:complexType name="ManifestApiEntryBase">
+        <xs:annotation>
+            <xs:documentation>
+                A common base type for children of the `apis-implemented` element of the
+                manifest file. We declare it here (as opposed to declaring in the Discovery
+                API's namespace) because it is shared between all the APIs - we want it to
+                stay backwards-compatible when new releases of the Discovery API are published.
+
+                IMPORTANT: Clients MUST NOT assume that all children of `apis-implemented` will
+                "inherit" these properties. It is true that most EWP-related APIs do, but
+                manifest files may contain references to *any* APIs.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="dev-email" minOccurs="0" maxOccurs="unbounded" type="Email">
+                <xs:annotation>
+                    <xs:documentation>
+                        RECOMMENDED element. Address of a developer (or server administrator) who may
+                        be contacted in case of problems *with this particular API* (e.g. malformed
+                        responses, etc.). Multiple `dev-email` elements may be provided.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="dev-notes" minOccurs="0" type="MultilineString">
+                <xs:annotation>
+                    <xs:documentation>
+                        Additional information provided by host developers for the client developers.
+
+                        E.g. "We are currently not delivering &lt;description&gt; elements because our
+                        model is incompatible with the `1.1.3` schema. We will start to deliver them
+                        once we upgrade to the `1.2.0` schema."
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="version" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    The API version number the host claims its implementation of this API conforms
+                    to. Host implementers MUST make sure that this number is kept in sync with their
+                    implementations.
+
+                    E.g. If you have used the `1.1.3` release of some API when you have implemented
+                    your endpoint, then you SHOULD put `1.1.3` here. If you put `1.2.0` here later
+                    on, then it means that you have just implemented some new `1.2.0` features (and
+                    you want to let other clients know that you have implemented them).
+
+                    Use `0.0.0` when you're implementing a draft API, which has not been officially
+                    released yet and doesn't have any version number yet.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[0-9]+\.[0-9]+\.[0-9]+"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
 </xs:schema>
