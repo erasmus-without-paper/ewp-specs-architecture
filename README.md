@@ -199,12 +199,12 @@ all of them need to be protected by proper certificates though.
 ### Client certificates
 
 Each EWP Host (via its [Manifest file][discovery-api]) declares a list of
-certificates it will use for making requests to other hosts. This list if
+certificates it will use for making requests to other hosts. This list is
 later fetched by registry, and the **fingerprints** of these certificates are
 served to all the EWP Network to see (see the [Registry API][registry-spec]
 for details).
 
-All of the your clients are required to use one of these client certificates
+All of your clients are required to use one of these client certificates
 when making requests within the EWP Network. Once the server confirms that the
 client is in possession of a proper private part of the certificate, it is able
 to identify the client's EWP Host and the HEIs it covers.
