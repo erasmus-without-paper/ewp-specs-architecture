@@ -124,16 +124,16 @@
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element ref="dev-email" minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="admin-email" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
                     <xs:documentation>
-                        RECOMMENDED element. Address of a developer (or server administrator) who may
+                        RECOMMENDED element. Address of a developer or server administrator who may
                         be contacted in case of problems *with this particular API* (e.g. malformed
-                        responses, etc.). Multiple `dev-email` elements may be provided.
+                        responses, etc.). Multiple `admin-email` elements may be provided.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element ref="dev-notes" minOccurs="0" maxOccurs="1">
+            <xs:element ref="admin-notes" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>
                         Additional information provided by host developers for the client developers.
@@ -169,7 +169,7 @@
         </xs:attribute>
     </xs:complexType>
 
-    <xs:element name="dev-email" type="Email">
+    <xs:element name="admin-email" type="Email">
         <xs:annotation>
             <xs:documentation>
                 Address of a developer (or server administrator) who may be contacted in case of
@@ -182,7 +182,7 @@
         </xs:annotation>
     </xs:element>
 
-    <xs:element name="dev-notes" type="MultilineString">
+    <xs:element name="admin-notes" type="MultilineString">
         <xs:annotation>
             <xs:documentation>
                 Additional information provided by administrators and/or developers.
