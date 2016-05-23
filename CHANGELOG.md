@@ -4,6 +4,13 @@ Release notes
 This document describes all the changes made to the *Architecture and Security*
 document, starting from its first released version.
 
+
+1.1.1
+-----
+
+* Changes in [common-types.xsd](common-types.xsd).
+
+
 1.1.0
 -----
 
