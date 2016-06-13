@@ -194,4 +194,32 @@
         </xs:annotation>
     </xs:element>
 
+    <xs:element name="error-response">
+        <xs:annotation>
+            <xs:documentation>
+                A generic envelope for all kinds of errors. Servers should attempt to include
+                this element in all HTTP 4xx and HTTP 5xx responses.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="developer-message" type="MultilineString">
+                    <xs:annotation>
+                        <xs:documentation>
+                            A message for the client developer.
+
+                            In case of client errors (HTTP 4xx responses) it should describe what the
+                            client did wrong (e.g. a required parameter is missing, etc.).
+
+                            In case of server errors (HTTP 5xx responses) it's usually much harder for the
+                            server to determine what went wrong, so this element will probably contain just
+                            some generic message in such cases (e.g. "Something went wrong. Administrators
+                            have been notified. We'll try to fix it ASAP.").
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 </xs:schema>

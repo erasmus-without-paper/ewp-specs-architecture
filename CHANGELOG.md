@@ -5,6 +5,14 @@ This document describes all the changes made to the *Architecture and Security*
 document, starting from its first released version.
 
 
+1.2.0
+-----
+
+* `<error-response>` element has been moved to the [common-types.xsd]
+  (common-types.xsd)  schema. There seemed to be no reason to keep it in a
+  separate namespace.
+
+
 1.1.1
 -----
 
@@ -14,8 +22,8 @@ document, starting from its first released version.
 1.1.0
 -----
 
-* Error handling rules and [error-response.xsd](error-response.xsd) schema were
-  introduced ([details](https://github.com/erasmus-without-paper/ewp-specs-architecture/issues/7)).
+* Error handling rules and `error-response.xsd` schema were introduced
+  ([details](https://github.com/erasmus-without-paper/ewp-specs-architecture/issues/7)).
 
 
 1.0.1
