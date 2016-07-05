@@ -5,6 +5,26 @@ This document describes all the changes made to the *Architecture and Security*
 document, starting from its first released version.
 
 
+1.2.1
+-----
+
+* Fixed some inconsistencies in the vocabulary.
+
+* A more appropriate definition of *EWP Host* was introduced, along with some
+  more complex examples of EWP Network topologies. Images were updated to
+  describe the example better.
+
+* Described some of the complexities of the A1 architecture in detail (as
+  discussed in [this thread]
+  (https://github.com/erasmus-without-paper/ewp-specs-api-echo/issues/3)).
+
+* Removed an (obsolete) paragraph saying that once an API is deployed, no new
+  major version of this API should be released. This has been allowed [for a
+  while now](https://github.com/erasmus-without-paper/ewp-specs-architecture/issues/6).
+
+* Updated links and references. Fixed some issues with formatting.
+
+
 1.2.0
 -----
 
