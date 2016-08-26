@@ -4,6 +4,11 @@ Release notes
 This document describes all the changes made to the *Architecture and Security*
 document, starting from its first released version.
 
+1.2.2
+-----
+
+* Only some minor changes in formatting and vocabulary.
+
 
 1.2.1
 -----

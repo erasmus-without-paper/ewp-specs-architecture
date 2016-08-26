@@ -134,31 +134,34 @@ quite different from all other EWP Hosts.
 
 ### Making requests
 
-The picture above can be a bit misleading. You might think that all requests
-in the EWP Network are connected to a single requesting HEI. This is not the
+The picture above can be a bit misleading. You might think that all HTTP
+requests in the EWP Network always originate from a single requesting HEI
+(because both light-blue lines start at HEI B in the picture). This is not the
 case.
 
 Each request in the EWP Network is signed with a client certificate, and each
-such client certificate is connected with a **group of HEIs**. So, when Host 2
-receives the request as pictured above, then - at first - it only knows that it
-came from Host 1, not from HEI B in particular.
+such client certificate is connected with a **group of HEIs**. So:
+
+ * When Host 2 receives the request as pictured above, then - at first (based
+   on the certificate used) - it only knows that it came from Host 1, not from
+   HEI B in particular.
 
  * If the requested set of data should be visible to HEI B only (not HEI A nor
-   C), then the requested API will often require an extra parameter (e.g.
-   `requesting_hei_id`).
+   C), then the requested API will often require an extra parameter to be
+   provided along with each request to this API (e.g. `requesting_hei_id`).
 
  * Similarly, if the data HEI B is asking for is related to HEI D only, and the
    host is not able to deduce this fact from other parameters, then the API
-   will also often require another parameter which will help the Host identify
-   the HEI to pull the data from (e.g. `responding_hei_id`).
+   will also often require another parameter which will help the Host to
+   identify the HEI which to pull the data from (e.g. `responding_hei_id`).
 
 This might be a bit confusing at first glance, but it shouldn't make your work
 any harder. And, in case of some partners, it may actually allow them to
 exchange data in a more efficient way.
 
 It's worth noting that we have considered simpler architectures too (e.g. one
-EWP Host per HEI), but we have concluded that many partners may leverage the
-more flexible one. See [this thread]
+EWP Host per HEI), but we have concluded that some partners are willing to
+leverage this more flexible design. See [this thread]
 (https://github.com/erasmus-without-paper/ewp-specs-api-echo/issues/3)
 if you're interested in the details.
 
@@ -179,7 +182,7 @@ of which might want to use their favorite languages and environments.
 If you choose to implement your APIs on many servers, then **you might also
 want to host multiple Discovery manifest files** (one for each of your
 servers), thus creating multiple EWP Hosts. This is allowed in the EWP Network
-- one HEI can be covered by many EWP Hosts. Note, that this does not matter
+(one HEI can be covered by many EWP Hosts). Note, that this does not matter
 from the client's view point - **the client only needs to know which URL to
 call** to get the data it needs, and it doesn't need to know which EWP Host
 serves this URL. See [Registry API] [registry-spec] for examples.
@@ -270,7 +273,7 @@ This setup has many advantages:
  * If a single EWP Host changes its certificate, but forgets to update its
    manifest, then only this single EWP Host will be affected.
 
- * You may delegate handling some of your API requests directly to a third
+ * You may delegate the duty of serving some of your APIs directly to a third
    party (no proxy needed), but still keep the client credentials for yourself
    (the third party won't be able to perform requests in the EWP Network unless
    is has control over your manifest).
