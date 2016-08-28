@@ -20,16 +20,51 @@ In order to join our network you'll need to:
    servers.
 
  * Send the URL of your manifest to the EWP Registry maintainers. It will be
-   stored in the EWP's [Registry Service][registry-spec], allowing other
-   partners to identify your HEIs and APIs, and verify your HTTP requests.
+   stored in the EWP's [Registry Service][registry], allowing other partners to
+   identify your HEIs and APIs, and verify your HTTP requests.
+
+
+### Development environment
+
+We keep an alternate instance of the Registry Service for development purposes:
+
+ * https://dev-registry.erasmuswithoutpaper.eu/
+
+This instance uses exactly the same [Registry API][registry-api] as the
+[regular Registry Service][registry] does, but it describes an "EWP Developer
+Network":
+
+ * EWP Developer Network is completely separated from the actual EWP Network.
+
+ * It contains URLs of individual developers' workstations, which may become
+   offline at any time (developers are not required to keep their [discovery
+   files][discovery-api] as up-to-date as the administrators of the "real"
+   EWP Hosts are).
+
+ * It may contain alpha implementations of unstable draft APIs.
+
+ * It may contain references to non-existent HEIs. In fact, developers are
+   encouraged to create many virtual HEIs to test *their own* client
+   implementations against *their own* server implementations.
+
+ * Otherwise, it uses **exactly the same protocols, security, and
+   permissions**, as the actual EWP Network does. This means that you don't
+   need any additional guidelines to join - the official EWP documentation
+   should be enough.
+
+To join EWP Developer Network, contact the dev-registry's administrators. You
+will find their email addresses in the [dev-registry's catalogue
+response][dev-catalogue-xml] (and if you're not sure how to read this XML, then
+your should read the rest of this document first).
 
 
 ### Implementing APIs
 
-Having completed the two steps described above, you will become a member of the
-EWP Network, and you will be able to issue requests to other EWP members
-(retrieve information from **other** institutions). You will NOT however share
-any of **your** data yet - you'll need to implement some more APIs to do that.
+Having completed the "Quick Start" steps described above, you will become a
+member of the EWP Network, and you will be able to issue requests to other EWP
+members (retrieve information from **other** institutions). You will NOT
+however share any of **your** data yet - you'll need to implement some more
+APIs to do that.
 
 For a complete list of APIs - visit [EWP Developers Page][develhub].
 
@@ -120,12 +155,12 @@ to determine which URL it needs to call in order to get the data. (In our
 simple case, this URL will be served by Host 2.)
 
 Detailed documentation on **how** to access the Registry, and how to determine
-which URL to call, is part of the [Registry API specification][registry-spec].
+which URL to call, is part of the [Registry API specification][registry-api].
 
 **Side-note** (for geeks only): Technically speaking, the Registry Service is
 *also* an API, and it is also embedded inside its own EWP Host, like all the
 other APIs. However, Registry's *EWP Host* does not cover any real HEIs and it
-does not implement any other APIs (except the [Registry API][registry-spec]).
+does not implement any other APIs (except the [Registry API][registry-api]).
 Also the URLs at which the Registry API is implemented cannot change. So it's
 quite different from all other EWP Hosts.
 
@@ -185,7 +220,7 @@ servers), thus creating multiple EWP Hosts. This is allowed in the EWP Network
 (one HEI can be covered by many EWP Hosts). Note, that this does not matter
 from the client's view point - **the client only needs to know which URL to
 call** to get the data it needs, and it doesn't need to know which EWP Host
-serves this URL. See [Registry API] [registry-spec] for examples.
+serves this URL. See [Registry API] [registry-api] for examples.
 
 **Example 2:**
 
@@ -255,7 +290,7 @@ domains.
 Each EWP Host (via its [Manifest file][discovery-api]) declares a list of
 certificates it will use for making requests to other hosts. This list is
 later fetched by registry, and the **fingerprints** of these certificates are
-served to all interested parties to see (see [Registry API][registry-spec] for
+served to all interested parties to see (see [Registry API][registry-api] for
 details).
 
 All of your clients are required to use one of these declared client
@@ -408,5 +443,7 @@ developing and accessing API methods:
 [discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery
 [develhub]: http://developers.erasmuswithoutpaper.eu/
 [statuses]: https://github.com/erasmus-without-paper/ewp-specs-management/blob/stable-v1/README.md#statuses
-[registry-spec]: https://github.com/erasmus-without-paper/ewp-specs-api-registry
+[registry]: https://registry.erasmuswithoutpaper.eu/
+[registry-api]: https://github.com/erasmus-without-paper/ewp-specs-api-registry
 [echo-api]: https://github.com/erasmus-without-paper/ewp-specs-api-echo
+[dev-catalogue-xml]: https://dev-registry.erasmuswithoutpaper.eu/catalogue-v1.xml
