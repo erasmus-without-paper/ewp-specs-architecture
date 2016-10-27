@@ -66,7 +66,8 @@ members (retrieve information from **other** institutions). You will NOT
 however share any of **your** data yet - you'll need to implement some more
 APIs to do that.
 
-For a complete list of APIs - visit [EWP Developers Page][develhub].
+As part of the EWP project, we have designed a couple of APIs. Visit
+[EWP Developers Page][develhub] for more information.
 
 
 Hosts, APIs and other components
@@ -102,8 +103,9 @@ an EWP Host which implements some APIs.
 
 Apart from covering some HEIs, EWP Host also *implements* some APIs (for the
 HEIs it covers). EWP Hosts are **not required** to implement *all* features of
-the EWP Network. Each host can implement a different set of APIs. They can also
-expose APIs unrelated to EWP.
+the EWP Network. Each host can implement a different set of APIs. **They can
+also expose APIs unrelated to EWP** (we do not enforce *any* requirements on
+such APIs).
 
 ![Some APIs have been connected to both EWP Hosts](images/diagram-step3.png)
 
@@ -255,6 +257,11 @@ in the documentation of specific CNR APIs.
 Security
 --------
 
+*Note: This chapter is a recommendation, not a requirement. That is, all
+"original" EWP APIs follow these guidelines, but you can also publish APIs
+which follow guidelines of their own.*
+
+
 ### SSL Certificates
 
 There are two types of certificates which all implementers must be aware of:
@@ -364,6 +371,10 @@ server's certificate is valid (signed by a trusted CA).
 Error handling rules
 --------------------
 
+*Note: This chapter is a recommendation, not a requirement. That is, all
+"original" EWP APIs follow these guidelines, but you can also publish APIs
+which follow guidelines of their own.*
+
 All server implementations of all APIs MUST follow these rules whenever an
 error occurs:
 
@@ -410,6 +421,10 @@ In particular:
 
 Backward-compatibility rules
 ----------------------------
+
+*Note: This chapter is a recommendation, not a requirement. That is, all
+"original" EWP APIs follow these guidelines, but you can also publish APIs
+which follow guidelines of their own.*
 
 All implementers and API designers MUST follow some basic rules when designing,
 developing and accessing API methods:
