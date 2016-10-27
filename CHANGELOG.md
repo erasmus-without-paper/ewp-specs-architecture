@@ -4,6 +4,17 @@ Release notes
 This document describes all the changes made to the *Architecture and Security*
 document, starting from its first released version.
 
+1.3.0
+-----
+
+* **New features:** Common-types added: `HTTP`, `HTTPWithOptionalLang`,
+  `CountryCode`.
+* Added a warning for about complexities of `xml:lang` (see [here]
+  (https://github.com/erasmus-without-paper/ewp-specs-architecture/issues/11)).
+* Clarified that some of the guidelines are only recommendations, not strict
+  requirements.
+
+
 1.2.3
 -----
 
