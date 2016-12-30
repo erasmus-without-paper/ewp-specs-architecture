@@ -4,6 +4,13 @@ Release notes
 This document describes all the changes made to the *Architecture and Security*
 document, starting from its first released version.
 
+
+1.5.0
+-----
+
+* Added `<user-message>` element to `<error-response>`.
+
+
 1.4.0
 -----
 
