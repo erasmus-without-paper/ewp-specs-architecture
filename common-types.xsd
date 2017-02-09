@@ -45,10 +45,14 @@
                         <xs:documentation>
                             A note for client developers: Keep in mind, that `xml:lang` is of the
                             `xs:language` type. This means that it MAY contain values such as `en`, but
-                            also `en-US`, `ar-Cyrl-CO`, or `tlh-Kore-AQ-fonipa`. You will often want to
-                            parse only the first component.
+                            also `en-US`, `ar-Cyrl-CO`, or `tlh-Kore-AQ-fonipa`. Most often, you will
+                            need to parse only the first component, but in some cases other components
+                            might also be pretty useful (like the script subtag - "Latn", "Cyrl", etc.).
 
-                            Discuss here:
+                            The `xml:language` datatype is defined here:
+                            https://www.ietf.org/rfc/bcp/bcp47.txt
+
+                            You can also discuss this tag in context of EWP here:
                             https://github.com/erasmus-without-paper/ewp-specs-architecture/issues/11
                         </xs:documentation>
                     </xs:annotation>
