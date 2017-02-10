@@ -355,7 +355,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="developer-message" type="MultilineString">
+                <xs:element name="developer-message" type="MultilineString" minOccurs="1" maxOccurs="1">
                     <xs:annotation>
                         <xs:documentation>
                             A message for the client developer.
