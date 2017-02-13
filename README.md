@@ -411,6 +411,36 @@ In particular:
    fault", and that it can (often automatically) retry the request later on.
 
 
+<a name='referential-integrity'></a>
+
+### Referential integrity
+
+Most EWP API servers are required to keep [referential integrity]
+[ref-integrity-wiki].
+
+Some partners might want to *not* expose all of their entities for EWP members.
+They might want to expose only a selected subset of them (for example, only
+the courses conducted in English, or only the mobilities no older than a year,
+etc.).
+
+You, as a server developer, are **allowed to hide some of your entities** from
+some (or from all) of the other partners, but if you do, then **you MUST hide
+them consistently**, so that referential integrity is not broken. If you don't,
+your clients will get unearned HTTP 400 errors (and they might try to search
+for the source of this bug in their own applications, while the bug will really
+be on the server side).
+
+For example, if you decide that a course `los_id=X` should not be accessible
+via the Courses API, then you MUST NOT return a reference to
+`<los-id>X</los-id>` in *none of the other APIs* too. (Such visibility MAY vary
+on requester, but it MUST be consistent for any single requester.)
+
+Obviously, the easiest way to satisfy this requirement is to decide *not to
+hide things* - then you won't have to worry if you leave a reference to it or
+not. *If* you decide to hide some entities however, then you MUST do this
+consistently.
+
+
 <a name='backward-compatibility-rules'></a>
 
 ### Backward-compatibility rules
@@ -586,3 +616,4 @@ There are a couple of reasons for this design:
 [echo-api]: https://github.com/erasmus-without-paper/ewp-specs-api-echo
 [dev-catalogue-xml]: https://dev-registry.erasmuswithoutpaper.eu/catalogue-v1.xml
 [favoritism]: https://github.com/erasmus-without-paper/ewp-specs-management#server-favoritism
+[ref-integrity-wiki]: https://en.wikipedia.org/wiki/Referential_integrity
