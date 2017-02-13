@@ -237,27 +237,6 @@ a single EWP Host per a single HEI, even if you are a SAAS provider for
 multiple HEIs.
 
 
-### Push notifications (and broadcasting)
-
-What if HEI B wanted to **notify** HEI D when something is changed, instead of
-requiring HEI D to ask periodically? E.g. a student has just failed an exam at
-B and we suspect that D would want to be notified instantly?
-
-Some of the APIs are **Change Notification Receiver (CNR) APIs**. If Host 2
-(the one which covers HEI D) wants to receive such notifications from other
-hosts, it indicates that it has implemented a specific CNR API in its Manifest
-file. Now, if HEI B wants to broadcast a notifications, then it first asks the
-Registry for URLs of all related CNR APIs, and then it posts the proper
-notifications at the listening URLs.
-
-It's worth noting that HEI D will usually NOT be required to broadcast such
-notifications (even if all other hosts implement CNR APIs and want to receive
-them). Implementers MAY choose to implement only a subset of push
-notifications, or even not implement them at all (thus forcing the other side
-to periodically pull the data instead). You will find more information on this
-in the documentation of specific CNR APIs.
-
-
 <a name="security"></a>
 
 Security and Authentication
@@ -465,6 +444,27 @@ development, and client development.
    single API at the same time. Releasing a new major version causes the API's
    XML namespace to be changed, so this won't cause any conflicts (see
    [Discovery API][discovery-api] for details).
+
+
+### Push notifications (and broadcasting)
+
+What if HEI B wanted to **notify** HEI D when something is changed, instead of
+requiring HEI D to ask periodically? E.g. a student has just failed an exam at
+B and we suspect that D would want to be notified instantly?
+
+Some of the APIs are **Change Notification Receiver (CNR) APIs**. If Host 2
+(the one which covers HEI D) wants to receive such notifications from other
+hosts, it indicates that it has implemented a specific CNR API in its Manifest
+file. Now, if HEI B wants to broadcast a notifications, then it first asks the
+Registry for URLs of all related CNR APIs, and then it posts the proper
+notifications at the listening URLs.
+
+It's worth noting that HEI D will usually NOT be required to broadcast such
+notifications (even if all other hosts implement CNR APIs and want to receive
+them). Implementers MAY choose to implement only a subset of push
+notifications, or even not implement them at all (thus forcing the other side
+to periodically pull the data instead). You will find more information on this
+in the documentation of specific CNR APIs.
 
 
 [discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery
