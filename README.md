@@ -70,8 +70,10 @@ As part of the EWP project, we have designed a couple of APIs. Visit
 [EWP Developers Page][develhub] for more information.
 
 
-Hosts, APIs and other components
---------------------------------
+<a name="components"></a>
+
+Core EWP components
+-------------------
 
 ### HEIs
 
@@ -94,7 +96,7 @@ an EWP Host which implements some APIs.
 
  * In some countries, there will be only a single EWP Host per country. In
    other countries every HEI will run its own EWP Host. Other more complex
-   topologies are also possible (we will provide some examples later on).
+   topologies are also possible (see [below](#network-topologies)).
 
 ![HEIs have been covered by two EWP Hosts](images/diagram-step2.png)
 
@@ -169,7 +171,7 @@ quite different from all other EWP Hosts.
 ![Registry Service and information flow](images/diagram-step4.png)
 
 
-### Making requests
+### How HEIs are covered by EWP Hosts
 
 The picture above can be a bit misleading. You might think that all HTTP
 requests in the EWP Network always originate from a single requesting HEI
@@ -203,6 +205,8 @@ leverage this more flexible design. See [this thread]
 if you're interested in the details.
 
 
+<a name='network-topologies'></a>
+
 ### More complex network topologies
 
 As we have indicated before, Registry Service allows HEI B to easily answer the
@@ -212,9 +216,9 @@ Hosts allow us to describe much more complex topologies.
 
 **Example 1:**
 
-API implementations can be hosted across multiple servers (which might be
-convenient, especially if you work with multiple developer teams, each one
-of which might want to use their favorite languages and environments.
+API implementations can be hosted across multiple servers and/or domains (which
+might be convenient, especially if you work with multiple developer teams, each
+one of which might want to use their favorite languages and environments.
 
 If you choose to implement your APIs on many servers, then **you might also
 want to host multiple Discovery manifest files** (one for each of your
@@ -227,10 +231,10 @@ serves this URL. See [Registry API] [registry-api] for examples.
 **Example 2:**
 
 If your institution covers multiple HEIs, but - for some reason - you can
-implement an API for only some of these HEIs, then might will also want to
-split your EWP Host into a couple of smaller ones. In other words, you may
-choose to host a single EWP Host per a single HEI, even if you are a SAAS
-provider for multiple HEIs.
+implement an API for only some of these HEIs, then you might want to split your
+EWP Host into a couple of smaller ones. In other words, you may choose to have
+a single EWP Host per a single HEI, even if you are a SAAS provider for
+multiple HEIs.
 
 
 ### Push notifications (and broadcasting)
@@ -254,17 +258,20 @@ to periodically pull the data instead). You will find more information on this
 in the documentation of specific CNR APIs.
 
 
-Security
---------
+<a name="security"></a>
 
-*Note: This chapter is a recommendation, not a requirement. That is, all
-"original" EWP APIs follow these guidelines, but you can also publish APIs
-which follow guidelines of their own.*
+Security and Authentication
+---------------------------
+
+*Note: This chapter is a recommendation, not a requirement. Most (if not all)
+our APIs follow these guidelines, but it is perfectly okay to use EWP Registry
+to publish an API that does things differently.*
 
 
-### SSL Certificates
+### Certificates
 
-There are two types of certificates which all implementers must be aware of:
+We use HTTPS protocol for encrypting and signing all EWP communication. There
+are two types of certificates which all implementers must be aware of:
 
  * **Server certificates** are used by the Host when it **responds** to HTTPS
    API requests.
@@ -275,7 +282,7 @@ Implementers MAY use the same certificate for both purposes, but it is NOT
 REQUIRED.
 
 
-### Server certificates
+#### Server certificates
 
 These are just "regular" SSL certificates, that is - they are bound to your
 domain, and are signed by a trusted CA. Neither the clients nor the registry
@@ -292,19 +299,19 @@ but all of them need to be protected by proper certificates issued for these
 domains.
 
 
-### Client certificates
+#### Client certificates
 
-Each EWP Host (via its [Manifest file][discovery-api]) declares a list of
+Each EWP Host declares (via its [Manifest file][discovery-api]) a list of
 certificates it will use for making requests to other hosts. This list is
 later fetched by registry, and the **fingerprints** of these certificates are
 served to all interested parties to see (see [Registry API][registry-api] for
 details).
 
-All of your clients are required to use one of these declared client
+All of your clients are required to use one of such published client
 certificates when making requests within the EWP Network. Once the server
 confirms that the client is in possession of a proper private key of the
-certificate, it is then able to identify the client's EWP Host and the HEIs it
-covers.
+certificate (this is the part of the TLS Handshake), it is then able to
+identify (with the help of the Registry again) which HEIs such client covers.
 
 This setup has many advantages:
 
@@ -312,13 +319,14 @@ This setup has many advantages:
    self-signed certificates and install them in their browsers for debugging
    purposes.
 
- * If a single EWP Host changes its certificate, but forgets to update its
-   manifest, then only this single EWP Host will be affected.
+ * If a single EWP Host changes its client certificate, but forgets to update
+   its manifest, then only this single EWP Host will be affected.
 
  * You may delegate the duty of serving some of your APIs directly to a third
    party (no proxy needed), but still keep the client credentials for yourself
    (the third party won't be able to perform requests in the EWP Network unless
-   is has control over your manifest).
+   it holds a private key for at least one of the certificates present in your
+   manifest).
 
  * Similarly, if you are a SAAS provider, you can delegate the permission of
    making requests *in the name of a single HEI* to one of your clients (as
@@ -366,17 +374,24 @@ you do in case of client certificates). You simply need to check if the
 server's certificate is valid (signed by a trusted CA).
 
 
+Other Recommendations
+---------------------
+
+It is true, that this chapter describes general EWP Network recommendations,
+**not requirements**. This means that it is perfectly okay to use EWP Registry
+to publish an API that doesn't follow the following guidelines.
+
+However, it is also true, that many EWP APIs explicitly REQUIRE these
+guidelines to be followed - it is a per-API design decision. In other words,
+**you still MUST follow these guidelines** when implementing most of the APIs.
+
+
 <a name='error-handling'></a>
 
-Error handling rules
---------------------
+### Error handling
 
-*Note: This chapter is a recommendation, not a requirement. That is, all
-"original" EWP APIs follow these guidelines, but you can also publish APIs
-which follow guidelines of their own.*
-
-All server implementations of all APIs MUST follow these rules whenever an
-error occurs:
+This chapter describes general error handling rules, which are followed by most
+of the EWP APIs whenever an error occurs.
 
  * If the service is **temporarily unavailable** for some reason (like
    maintenance), then servers MUST respond with the HTTP 5xx status
@@ -419,15 +434,12 @@ In particular:
 
 <a name='backward-compatibility-rules'></a>
 
-Backward-compatibility rules
-----------------------------
+### Backward-compatibility rules
 
-*Note: This chapter is a recommendation, not a requirement. That is, all
-"original" EWP APIs follow these guidelines, but you can also publish APIs
-which follow guidelines of their own.*
-
-All implementers and API designers MUST follow some basic rules when designing,
-developing and accessing API methods:
+This chapter describes basic backward-compatibility rules, which are followed
+by most of the EWP APIs (it's not a strict requirement for all new APIs, only
+a recommendation). They are important during all stages: the API design, server
+development, and client development.
 
  * Adding a new **optional** element to an XML file is backward-compatible.
    Client implementers MUST ignore unknown elements. If an element has not
