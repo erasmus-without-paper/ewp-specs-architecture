@@ -496,7 +496,7 @@ so by implementing a chosen CNR API (depending on the type of entity they would
 like to watch), and publishing this fact in its [manifest file][discovery-api].
 There are a couple of classes of such notifications - implementing a specific
 CNR API is like "subscribing" to receive specific classes of notifications.
-  
+
 In other words, **CNR APIs are simply callback URLs** for [push
 notifications](https://en.wikipedia.org/wiki/Push_technology).
 
@@ -520,7 +520,7 @@ APIs is sufficient to keep your copy of the data up-to-date. You SHOULD either:
    background worker to refresh the stale data. It is recommended to do this
    during the server night-time hours, and make use of the optimization
    features such as the `modified_since` parameters (if present).
-   
+
  * Regardless of which of the two methods above you choose, it is also
    recommended to allow your end-users to refresh an entity manually. Just put
    a "refresh now" button in your user interface. It will make the work of your
@@ -535,7 +535,7 @@ notification, then:
 
  * It first asks the Registry Service for the URLs of all related CNR APIs.
  * It pushes (sends a POST request) proper notifications at the listening URLs.
- 
+
 This process however is not as simple as it sounds. In order for this model
 to work faultlessly, the server SHOULD also gracefully handle temporary I/O
 errors (caused by, for example, a malfunction on the receiver's servers, or a
@@ -556,7 +556,7 @@ It works like this:
    IDs, it also watches the Registry Service for the list of the listening CNR
    APIs, and then - for each listener - attempts to send it the list of all IDs
    that were changed.
-   
+
    The sender is allowed to postpone sending some notifications so that it will
    later be able to send them in bulk (e.g. to reduce bandwidth usage).
    However, please note, that all such delays may reduce user-experience. It
@@ -564,7 +564,7 @@ It works like this:
 
  * If CNR API doesn't respond, or it responds with a HTTP 5xx error, then the
    sender SHOULD retry delivering the notification after some time.
-   
+
    To avoid unnecessary network traffic, it is recommended to use some kind of
    an [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff)
    strategy when repeating your requests. Undelivered requests MAY expire after
@@ -592,7 +592,7 @@ There are a couple of reasons for this design:
  * When a single entity is changed multiple times in rapid succession (which is
    a pretty common use case!), it is very simple to "merge" all such changes
    into a single, tiny notification.
-  
+
  * **Synchronization problems are quite easy to handle.** If change `N` reaches
    the requester after change `N+1` does, then the possible effects of this
    fact are much easier to comprehend when only entity IDs are being
@@ -602,7 +602,7 @@ There are a couple of reasons for this design:
  * In the event of HTTP 4xx and HTTP 5xx failures, **not much network traffic
    is wasted**. The requests still fail, but since the requests are tiny, this
    failure doesn't hurt that much.
- 
+
  * It's **generally easier to implement for the sending party**. Generating
    more detailed notifications with diff-like descriptions of all the changed
    properties is obviously a harder job. And, in EWP, we [slightly favor making
