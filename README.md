@@ -446,25 +446,136 @@ development, and client development.
    [Discovery API][discovery-api] for details).
 
 
-### Push notifications (and broadcasting)
+### Broadcasting changes ("CNR" APIs)
 
-What if HEI B wanted to **notify** HEI D when something is changed, instead of
-requiring HEI D to ask periodically? E.g. a student has just failed an exam at
-B and we suspect that D would want to be notified instantly?
+What if EWP Host `X` wanted to **notify** other EWP Hosts (like `Y`) when
+something is changed, instead of requiring `Y` to ask periodically?
 
-Some of the APIs are **Change Notification Receiver (CNR) APIs**. If Host 2
-(the one which covers HEI D) wants to receive such notifications from other
-hosts, it indicates that it has implemented a specific CNR API in its Manifest
-file. Now, if HEI B wants to broadcast a notifications, then it first asks the
-Registry for URLs of all related CNR APIs, and then it posts the proper
-notifications at the listening URLs.
+In EWP, we have designed a concept called **Change Notification Receiver (CNR)
+APIs**. These APIs are simply an application of the [publish-subscribe
+pattern](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern),
+which also happens to fit well with our architecture and terminology.
 
-It's worth noting that HEI D will usually NOT be required to broadcast such
-notifications (even if all other hosts implement CNR APIs and want to receive
-them). Implementers MAY choose to implement only a subset of push
-notifications, or even not implement them at all (thus forcing the other side
-to periodically pull the data instead). You will find more information on this
-in the documentation of specific CNR APIs.
+
+#### Client part (receiving notifications)
+
+If EWP Host `Y` wants to receive notifications from other hosts, it indicates
+so by implementing a chosen CNR API (depending on the type of entity they would
+like to watch), and publishing this fact in its [manifest file][discovery-api].
+There are a couple of classes of such notifications - implementing a specific
+CNR API is like "subscribing" to receive specific classes of notifications.
+  
+In other words, **CNR APIs are simply callback URLs** for [push
+notifications](https://en.wikipedia.org/wiki/Push_technology).
+
+However, it's worth noting that `X` will not necessarily be required to
+actually *send* the notifications (even if all other EWP Hosts are ready to
+receive them). Server implementers MAY choose to implement only a subset of
+push notifications, or even not implement them at all (thus forcing the other
+side to periodically pull the data instead). **The possibility of network
+failures and programming errors are also valid issues to expect.**
+
+This means that - as a client - you MUST NOT truly rely that implementing CNR
+APIs is sufficient to keep your copy of the data up-to-date. You SHOULD either:
+
+ * Avoid storing the data permanently (i.e. avoid keeping it in the database).
+   Instead, you might want to *cache it*, and clear the cache after some time,
+   or after receiving a CNR notification. This forces your application to
+   re-fetch the fresh data whenever it is actually needed.
+
+ * If you prefer keeping the data in the database, then you might keep a
+   "last confirmed" date along with it. Once the date get old, you may run a
+   background worker to refresh the stale data. It is recommended to do this
+   during the server night-time hours, and make use of the optimization
+   features such as the `modified_since` parameters (if present).
+   
+ * Regardless of which of the two methods above you choose, it is also
+   recommended to allow your end-users to refresh an entity manually. Just put
+   a "refresh now" button in your user interface. It will make the work of your
+   users much easier when they are having a live conversation with each other
+   over the phone.
+
+
+#### Server part (sending notifications)
+
+In principle, it seems simple - when an EWP Host `X` wants to broadcast a
+notification, then:
+
+ * It first asks the Registry Service for the URLs of all related CNR APIs.
+ * It pushes (sends a POST request) proper notifications at the listening URLs.
+ 
+This process however is not as simple as it sounds. In order for this model
+to work faultlessly, the server SHOULD also gracefully handle temporary I/O
+errors (caused by, for example, a malfunction on the receiver's servers, or a
+misconfiguration on the sender's network, etc.). And this means that you SHOULD
+have a specialized queue-based component for the job. Let's call it an **EWP
+Notification Sender Daemon**.
+
+![Example algorithm of a Notification Sender Daemon](images/notification-sender.png)
+
+It works like this:
+
+ * Once you detect a change in one of your entities, you push its ID to the
+   queue. If is recommended for the queue to be backed by a persistent storage
+   engine (e.g. a separate table in a database), to avoid missing notifications
+   after service is restarted.
+
+ * Notification Sender actively watches the queue for the list of changed
+   IDs, it also watches the Registry Service for the list of the listening CNR
+   APIs, and then - for each listener - attempts to send it the list of all IDs
+   that were changed.
+   
+   The sender is allowed to postpone sending some notifications so that it will
+   later be able to send them in bulk (e.g. to reduce bandwidth usage).
+   However, please note, that all such delays may reduce user-experience. It
+   is not recommended to delay notifications for longer than 5 minutes.
+
+ * If CNR API doesn't respond, or it responds with a HTTP 5xx error, then the
+   sender SHOULD retry delivering the notification after some time.
+   
+   To avoid unnecessary network traffic, it is recommended to use some kind of
+   an [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff)
+   strategy when repeating your requests. Undelivered requests MAY expire after
+   some time (e.g. 24 hours).
+
+ * Additionally, the server also publishes the information that it has
+   implemented the notification-sending feature by adding a proper
+   `<sends-notifications/>` element to respective entity serving APIs (see
+   `manifest-entry.xsd` files in respective APIs). Clients MAY use this
+   information to choose different refresh strategies per each partner.
+
+
+### Why "change notifications" instead of actual "changes"?
+
+Our CNR APIs notify the listening partners that certain entities have been
+recently updated, but they do not inform them **what exactly** has been
+changed.
+
+There are a couple of reasons for this design:
+
+ * Notification Sender send tiny objects. Each notification of queue takes the
+   **minimal amount of memory**. With more memory free, it is easier for the
+   daemon implementers to keep **longer delivery-expiry timeout periods**.
+
+ * When a single entity is changed multiple times in rapid succession (which is
+   a pretty common use case!), it is very simple to "merge" all such changes
+   into a single, tiny notification.
+  
+ * **Synchronization problems are quite easy to handle.** If change `N` reaches
+   the requester after change `N+1` does, then the possible effects of this
+   fact are much easier to comprehend when only entity IDs are being
+   transferred. (Imagine what would happen if both `N` and `N+1` contained a
+   conflicting change in a single status of a single mobility.)
+
+ * In the event of HTTP 4xx and HTTP 5xx failures, **not much network traffic
+   is wasted**. The requests still fail, but since the requests are tiny, this
+   failure doesn't hurt that much.
+ 
+ * It's **generally easier to implement for the sending party**. Generating
+   more detailed notifications with diff-like descriptions of all the changed
+   properties is obviously a harder job. And, in EWP, we [slightly favor making
+   the job easier for server implementers][favoritism], rather than making it
+   easier for the client implementers.
 
 
 [discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery
@@ -474,3 +585,4 @@ in the documentation of specific CNR APIs.
 [registry-api]: https://github.com/erasmus-without-paper/ewp-specs-api-registry
 [echo-api]: https://github.com/erasmus-without-paper/ewp-specs-api-echo
 [dev-catalogue-xml]: https://dev-registry.erasmuswithoutpaper.eu/catalogue-v1.xml
+[favoritism]: https://github.com/erasmus-without-paper/ewp-specs-management#server-favoritism
