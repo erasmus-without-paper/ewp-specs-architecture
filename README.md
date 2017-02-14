@@ -476,6 +476,8 @@ development, and client development.
    [Discovery API][discovery-api] for details).
 
 
+<a name='cnr'></a>
+
 ### Broadcasting changes ("CNR" APIs)
 
 What if EWP Host `X` wanted to **notify** other EWP Hosts (like `Y`) when
