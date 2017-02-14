@@ -577,7 +577,7 @@ It works like this:
    information to choose different refresh strategies per each partner.
 
 
-### Why "change notifications" instead of actual "changes"?
+#### Why "change notifications" instead of actual "changes"?
 
 Our CNR APIs notify the listening partners that certain entities have been
 recently updated, but they do not inform them **what exactly** has been
