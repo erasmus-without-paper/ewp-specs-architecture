@@ -609,9 +609,9 @@ changed.
 
 There are a couple of reasons for this design:
 
- * Notification Sender send tiny objects. Each notification of queue takes the
-   **minimal amount of memory**. With more memory free, it is easier for the
-   daemon implementers to keep **longer delivery-expiry timeout periods**.
+ * Notification Sender send tiny objects. Each notification on the queue uses
+   the **minimal amount of memory**. With more memory free, it is easier for
+   the daemon implementers to keep **longer delivery-expiry timeout periods**.
 
  * When a single entity is changed multiple times in rapid succession (which is
    a pretty common use case!), it is very simple to "merge" all such changes
