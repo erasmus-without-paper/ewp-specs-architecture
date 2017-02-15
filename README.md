@@ -411,6 +411,61 @@ In particular:
    fault", and that it can (often automatically) retry the request later on.
 
 
+<a name='ids'></a>
+
+### Identifiers (surrogate vs. natural keys)
+
+Majority of our schemas require partners to supply both
+[surrogate](https://en.wikipedia.org/wiki/Surrogate_key) and
+[natural](https://en.wikipedia.org/wiki/Natural_key) keys for their
+entities. **We refer to surrogate keys as "IDs"** (e.g. `los_id`), while
+**natural keys are called "codes"** (e.g. `los_code`):
+
+ * Both sets of keys are **required to be unique** (case-sensitive). A code MAY
+   change in time, but at any single point in time, it should uniquely identify
+   a single entity.
+
+ * Identifiers (surrogate keys) are generally **hidden** from the end users.
+   Codes (natural keys) are not - we recommend displaying them.
+
+   * If a computer program wants to find an entity, **it will use the ID**.
+   * If a user wants to find an entity, he will use the **code**. (That's why
+     it's also recommended to keep your codes simple to type down.)
+
+   Most of our APIs require server implementers to allow entity matching by
+   using any one of those (either ID or the code).
+
+ * If the partner's database stores **surrogate keys only**, then he MAY simply
+   supply his surrogate key in the code. It this case, it is recommended that
+   such surrogate keys are short (e.g. integers instead of UUIDs).
+
+ * If the partner's database stores **natural keys only**, then he is REQUIRED
+   to **add a new column for the surrogate key**.
+
+   The **only exemption** from this requirement is the following situation:
+
+   * The partner can guarantee with a 100% of certainty that his natural keys
+     will never change. This means that his customers (the HEIs) **will never
+     be allowed** to rewrite these keys. (In most cases, you won't be able to
+     guarantee such things.)
+
+   * All values of the natural key match the restrictions we put upon the
+     surrogate key (see below).
+
+Additionally, we need to put some limitations on the values of the identifiers
+(surrogate keys) themselves:
+
+ * Identifiers are REQUIRED to have the length between 1 and 64 characters.
+ * Identifiers are REQUIRED to consist of printable characters (space not
+   included) in the [Basic Latin Unicode block][latin] (`U+0021`..`U+007E`).
+ * It is RECOMMENDED to avoid using punctuation and symbol characters.
+
+This allows implementers to easily store remote identifiers in a `varchar(64)`.
+Please note, that these limitations are for identifiers only, not the codes!
+Codes MAY contain any range of Unicode characters, and EWP doesn't currently
+put any length limits on them.
+
+
 <a name='referential-integrity'></a>
 
 ### Referential integrity
@@ -643,3 +698,4 @@ There are a couple of reasons for this design:
 [dev-catalogue-xml]: https://dev-registry.erasmuswithoutpaper.eu/catalogue-v1.xml
 [favoritism]: https://github.com/erasmus-without-paper/ewp-specs-management#server-favoritism
 [ref-integrity-wiki]: https://en.wikipedia.org/wiki/Referential_integrity
+[latin]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)

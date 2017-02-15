@@ -115,6 +115,20 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="AsciiPrintableIdentifier">
+        <xs:annotation>
+            <xs:documentation>
+                A generic base type for identifiers (surrogate keys).
+
+                This type restricts the values as described here:
+                https://github.com/erasmus-without-paper/ewp-specs-architecture#ids
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[&#x0021;-&#x007E;]{1,64}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="Email">
         <xs:annotation>
             <xs:documentation>
