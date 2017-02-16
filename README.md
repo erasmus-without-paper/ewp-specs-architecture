@@ -426,14 +426,26 @@ entities. **We refer to surrogate keys as "IDs"** (e.g. `los_id`), while
    a single entity.
 
  * Identifiers (surrogate keys) are generally **hidden** from the end users.
-   Codes (natural keys) are not - we recommend displaying them.
+   Codes (natural keys) are not (it is RECOMMENDED to display them).
 
    * If a computer program wants to find an entity, **it will use the ID**.
-   * If a user wants to find an entity, he will use the **code**. (That's why
-     it's also recommended to keep your codes simple to type down.)
+   * If a user wants to find an entity, he will use the **code**. (So, it's
+     also RECOMMENDED to keep your codes short, simple and within the Latin
+     alphabet).
 
-   Most of our APIs require server implementers to allow entity matching by
-   using any one of those (either ID or the code).
+ * Most of our APIs require server implementers to allow entity matching by
+   using any one of those (either ID or the code). In cases where an **exact
+   match** is expected to be found, both identifiers and codes are REQUIRED to
+   be compared as **case-sensitive strings**. For example, all following
+   statements are true:
+
+   ```
+   "A123" != "a123"
+   "82cf3566-4ea1-4b14-b253-de9a68881fff" != "82CF3566-4EA1-4B14-B253-DE9A68881FFF"
+   "82cf3566-4ea1-4b14-b253-de9a68881fff" != "82cf35664ea14b14b253de9a68881fff"
+   "123" != "0123"
+   "123" != "123.0"
+   ```
 
  * If the partner's database stores **surrogate keys only**, then he MAY simply
    supply his surrogate key in the code. It this case, it is recommended that
