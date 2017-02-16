@@ -452,8 +452,8 @@ entities. **We refer to surrogate keys as "IDs"** (e.g. `los_id`), while
    * All values of the natural key match the restrictions we put upon the
      surrogate key (see below).
 
-Additionally, we need to put some limitations on the values of the identifiers
-(surrogate keys) themselves:
+Additionally, we need to put some **limitations on identifiers values**
+themselves (surrogate keys):
 
  * Identifiers are REQUIRED to have the length between 1 and 64 characters.
  * Identifiers are REQUIRED to consist of printable characters (space not
@@ -464,6 +464,19 @@ This allows implementers to easily store remote identifiers in a `varchar(64)`.
 Please note, that these limitations are for identifiers only, not the codes!
 Codes MAY contain any range of Unicode characters, and EWP doesn't currently
 put any length limits on them.
+
+There's one more recommendation to consider:
+
+ * It is RECOMMENDED to make all your identifiers (surrogate keys)
+   **universally** unique. Consider the advantages of this strategy when, for
+   example, two EWP HEIs decide to merge together (and such things do happen!).
+   [UUIDs](https://en.wikipedia.org/wiki/Universally_unique_identifier) (in
+   their canonical form) are probably the most widely adopted format for
+   universally unique identifiers.
+
+   Obviously, if you decide *not* to follow this recommendation, all your
+   identifiers still MUST uniquely identify your entities within each single
+   HEI you cover.
 
 
 <a name='referential-integrity'></a>
