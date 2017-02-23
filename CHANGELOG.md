@@ -5,6 +5,38 @@ This document describes all the changes made to the *Architecture and Security*
 document, starting from its first released version.
 
 
+1.6.0
+-----
+
+* Updated structure of the document (changed names and indentation of some
+  chapters).
+
+* Added **a detailed chapter explaining identifiers and codes** (surrogate and
+  natural keys). It defines how they should be compared with each other (in
+  particular, comparison should be case-sensitive), what is the recommended
+  type for the values ([UUIDs]
+  (https://github.com/erasmus-without-paper/general-issues/issues/10#issuecomment-280311729))
+  and what restrictions these values must meet (discuss [here]
+  (https://github.com/erasmus-without-paper/general-issues/issues/23)).
+
+* Added recommendations in regard to **referential integrity** and explaining
+  how "old data" should be kept (discuss
+  [here](https://github.com/erasmus-without-paper/general-issues/issues/20)).
+
+* Expanded the chapter about **broadcasting changes and CNR APIs**. Among other
+  things, it now contains separate recommendations for both the server and the
+  client (discuss [here]
+  (https://github.com/erasmus-without-paper/ewp-specs-architecture/issues/19)).
+
+* Expanded XSD annotations in regard to a possible uses of `xml:lang`'s [script
+  subtag](https://en.wikipedia.org/wiki/ISO_15924).
+
+* `minOccurs` and `maxOccurs` are now provided explicitly ([why?]
+  (https://github.com/erasmus-without-paper/general-issues/issues/22)).
+
+* Typos and other minor fixes.
+
+
 1.5.0
 -----
 
