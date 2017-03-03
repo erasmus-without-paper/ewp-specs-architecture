@@ -5,6 +5,14 @@ This document describes all the changes made to the *Architecture and Security*
 document, starting from its first released version.
 
 
+1.7.0
+-----
+
+* Introduced `<success-user-message>` element to `common-types.xsd`. (Currently
+  it is used in Outgoing Mobilities API only, but we believe that more APIs
+  might want to reuse it.)
+
+
 1.6.0
 -----
 
