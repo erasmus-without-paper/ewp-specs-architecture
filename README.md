@@ -689,7 +689,44 @@ changed.
 
 There are a couple of reasons for this design:
 
- * Notification Sender send tiny objects. Each notification on the queue uses
+ * In most EWP APIs we use the [master/slave][master-slave] communication
+   model:
+
+   - The master serves its entities as they are (e.g. via the `get` endpoint
+     of Outgoing Mobilities API). The master server can always be certain that
+     its data is up-to-date.
+
+   - The client, if he wants to change something, then he MUST do so directly
+     on the master server (e.g. by calling the `update` endpoint of his
+     Outgoing Mobilities API). The client MAY keep a copy of the data, but he
+     cannot just make changes to this copy without master's "approval".
+
+   In this model, the client can never be 100% sure that his copy of the
+   data is up-to-date. Conflicts are always possible (e.g. the client is trying
+   to `UPDATE` an entity which has just been `DELETE`d from the master).
+   **These conflicts need to be resolved by the slave.**
+
+   This means that regardless of the synchronization method we choose, the
+   client still MUST implement a "refresh procedure" - a piece of code which
+   *compares* his "slave" data with the "master" copy, detects differences, and
+   acts on these differences (synchronizes them, sends notifications, etc.).
+
+   Refresh procedures are not easy to write, but since they are needed anyway,
+   it seems reasonable to reuse them. And so, we made these refresh procedures
+   a central part of our replication. In most cases, implementing a CNR API is
+   **nothing more than performing a refresh procedure on a given set of
+   objects**.
+
+   EWP's "refresh" procedures are also known as "reload", "reset" or "re-sync"
+   procedures in database replication world, but the meaning is slightly
+   different. In our case we will *usually* want to refresh small sets of
+   entities, rather than reloading all of them. A "full" refresh is only
+   required after a slave system failure (when CNRs are not listening), or -
+   periodically - if we suspect that the master implementation is flawed and
+   fails to (or chooses not to) deliver notifications (and this *will* happen,
+   we're not infallible).
+
+ * Notification Sender sends tiny objects. Each notification on the queue uses
    the **minimal amount of memory**. With more memory free, it is easier for
    the daemon implementers to keep **longer delivery-expiry timeout periods**.
 
@@ -724,3 +761,4 @@ There are a couple of reasons for this design:
 [favoritism]: https://github.com/erasmus-without-paper/ewp-specs-management#server-favoritism
 [ref-integrity-wiki]: https://en.wikipedia.org/wiki/Referential_integrity
 [latin]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
+[master-slave]: https://en.wikipedia.org/wiki/Master/slave_(technology)
