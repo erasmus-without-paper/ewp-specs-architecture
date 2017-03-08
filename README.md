@@ -585,7 +585,8 @@ development, and client development.
 ### Broadcasting changes ("CNR" APIs)
 
 What if EWP Host `X` wanted to **notify** other EWP Hosts (like `Y`) when
-something is changed, instead of requiring `Y` to ask periodically?
+something is changed (inserted, updated **or deleted**), instead of requiring
+`Y` to ask periodically?
 
 In EWP, we have designed a concept called **Change Notification Receiver (CNR)
 APIs**. These APIs are simply an application of the [publish-subscribe
@@ -656,6 +657,13 @@ It works like this:
    engine (e.g. a separate table in a database), to avoid missing notifications
    after service is restarted.
 
+   Note that creating or deleting an entity also counts as a change. It's still
+   enough to send the ID of the changed entity only (you don't need to store
+   the type of this change). For example, if an IIA draft is deleted, and the
+   clients receives an IIA CNR with the ID of this deleted IIA, then he will be
+   able to determine that it indeed has been deleted (by querying IIAs API and
+   receiving no matching IIA).
+
  * Notification Sender actively watches the queue for the list of changed
    IDs, it also watches the Registry Service for the list of the listening CNR
    APIs, and then - for each listener - attempts to send it the list of all IDs
@@ -696,18 +704,18 @@ There are a couple of reasons for this design:
      of Outgoing Mobilities API). The master server can always be certain that
      its data is up-to-date.
 
-   - The client, if he wants to change something, then he MUST do so directly
+   - The slave, if he wants to change something, then he MUST do so directly
      on the master server (e.g. by calling the `update` endpoint of his
-     Outgoing Mobilities API). The client MAY keep a copy of the data, but he
+     Outgoing Mobilities API). The slave MAY keep a copy of the data, but he
      cannot just make changes to this copy without master's "approval".
 
-   In this model, the client can never be 100% sure that his copy of the
-   data is up-to-date. Conflicts are always possible (e.g. the client is trying
+   In this model, the slave can never be 100% sure that his copy of the
+   data is up-to-date. Conflicts are always possible (e.g. the slave is trying
    to `UPDATE` an entity which has just been `DELETE`d from the master).
    **These conflicts need to be resolved by the slave.**
 
    This means that regardless of the synchronization method we choose, the
-   client still MUST implement a "refresh procedure" - a piece of code which
+   slave still MUST implement a "refresh procedure" - a piece of code which
    *compares* his "slave" data with the "master" copy, detects differences, and
    acts on these differences (synchronizes them, sends notifications, etc.).
 
