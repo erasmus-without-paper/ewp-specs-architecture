@@ -200,8 +200,8 @@ exchange data in a more efficient way.
 
 It's worth noting that we have considered simpler architectures too (e.g. one
 EWP Host per HEI), but we have concluded that some partners are willing to
-leverage this more flexible design. See [this thread]
-(https://github.com/erasmus-without-paper/ewp-specs-api-echo/issues/3)
+leverage this more flexible design. See
+[this thread](https://github.com/erasmus-without-paper/ewp-specs-api-echo/issues/3)
 if you're interested in the details.
 
 
@@ -272,10 +272,10 @@ All implemented APIs MUST be served via the HTTPS protocol. This allows the
 clients to verify that responses come from the proper source.
 
 Note, that APIs can be spread across multiple domains (and all these domains
-will be referenced in the `<apis-implemented>` section of the [Manifest file]
-[discovery-api]). The number of domains used to implement EWP does not matter,
-but all of them need to be protected by proper certificates issued for these
-domains.
+will be referenced in the `<apis-implemented>` section of the
+[Manifest file][discovery-api]). The number of domains used to implement EWP
+does not matter, but all of them need to be protected by proper certificates
+issued for these domains.
 
 
 #### Client certificates
@@ -495,8 +495,8 @@ There's one more recommendation to consider:
 
 ### Referential integrity
 
-Most EWP API servers are required to keep [referential integrity]
-[ref-integrity-wiki].
+Most EWP API servers are required to keep
+[referential integrity][ref-integrity-wiki].
 
 Some partners might want to *not* expose all of their entities for EWP members.
 They might want to expose only a selected subset of them (for example, only
