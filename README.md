@@ -1,5 +1,5 @@
-Architecture and Security
-=========================
+Architecture and Common Datatypes
+=================================
 
 This document describes EWP vocabulary, network components, common features and
 data types, and explains basic rules about how partners communicate with each

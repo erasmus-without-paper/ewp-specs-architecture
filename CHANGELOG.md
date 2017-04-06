@@ -1,8 +1,8 @@
 Release notes
 =============
 
-This document describes all the changes made to the *Architecture and Security*
-document, starting from its first released version.
+This document describes all the changes made to the *Architecture and Common
+Datatypes* document, starting from its first released version.
 
 
 1.7.0
@@ -57,7 +57,8 @@ document, starting from its first released version.
 * More simple data types added to `common-types.xsd`: `UUID`, `EfqLevel`,
   `CefrLevel`, `Gender`.
 * Added a note in `common-types.xsd` explaining why we keep it in the
-  *Architecture and Security* document.
+  *Architecture and Security* document (this was the name of this document at
+  that point).
 
 
 1.3.0
