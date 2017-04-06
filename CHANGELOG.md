@@ -5,6 +5,21 @@ This document describes all the changes made to the *Architecture and Common
 Datatypes* document, starting from its first released version.
 
 
+1.8.0
+-----
+
+* Removed the *Security and Authentication* section. The contents of this
+  section were moved to separate documents ([details]
+  (https://github.com/erasmus-without-paper/ewp-specs-architecture/issues/21)).
+
+  * As a result, renamed the document to **Architecture and Common Datatypes**
+    (previous name was **Architecture and Security**).
+
+* Added a detailed explanation of the master-slave model in context of CNRs.
+
+* Explained how to handle deleted entities via CNR.
+
+
 1.7.0
 -----
 
