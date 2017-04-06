@@ -297,6 +297,12 @@ In particular:
  * Whenever a client receives a **HTTP 5xx** error, it knows that it's not "his
    fault", and that it can (often automatically) retry the request later on.
 
+It's worth noting, that error responses SHOULD attempt to follow all security
+policies of the endpoint. For example, if the endpoint signs (and/or encrypts)
+all its regular HTTP 200 responses, then it also SHOULD sign (and/or encrypt)
+its HTTP 4xx and 5xx responses (with exactly the same algorithms it uses for
+HTTP 200 responses). Read [this document][error-signing] for more information.
+
 
 <a name='ids'></a>
 
@@ -657,3 +663,4 @@ There are a couple of reasons for this design:
 [ref-integrity-wiki]: https://en.wikipedia.org/wiki/Referential_integrity
 [latin]: https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
 [master-slave]: https://en.wikipedia.org/wiki/Master/slave_(technology)
+[error-signing]: https://github.com/erasmus-without-paper/ewp-specs-sec-intro#error-signing
