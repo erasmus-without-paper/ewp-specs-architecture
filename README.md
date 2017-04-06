@@ -1,9 +1,9 @@
 Architecture and Security
 =========================
 
-This document describes EWP Network components, establishes some common
-security measures, features, data types and vocabulary, and explains how
-partners communicate with themselves.
+This document describes EWP vocabulary, network components, common features and
+data types, and explains basic rules about how partners communicate with each
+other and handle errors.
 
 * [What is the status of this document?][statuses]
 * [See the index of all other EWP Specifications][develhub]
@@ -178,11 +178,12 @@ requests in the EWP Network always originate from a single requesting HEI
 (because both light-blue lines start at HEI B in the picture). This is not the
 case.
 
-Each request in the EWP Network is signed with a client certificate, and each
-such client certificate is connected with a **group of HEIs**. So:
+Non-anonymous requests in the EWP Network are performed with use of client
+credentials. Each set of client credentials is connected with a **group of
+HEIs**. So:
 
  * When Host 2 receives the request as pictured above, then - at first (based
-   on the certificate used) - it only knows that it came from Host 1, not from
+   on the credentials used) - it only knows that it came from Host 1, not from
    HEI B in particular.
 
  * If the requested set of data should be visible to HEI B only (not HEI A nor
@@ -237,132 +238,18 @@ a single EWP Host per a single HEI, even if you are a SAAS provider for
 multiple HEIs.
 
 
-<a name="security"></a>
-
-Security and Authentication
----------------------------
-
-*Note: This chapter is a recommendation, not a requirement. Most (if not all)
-our APIs follow these guidelines, but it is perfectly okay to use EWP Registry
-to publish an API that does things differently.*
-
-
-### Certificates
-
-We use HTTPS protocol for encrypting and signing all EWP communication. There
-are two types of certificates which all implementers must be aware of:
-
- * **Server certificates** are used by the Host when it **responds** to HTTPS
-   API requests.
- * **Client certificates** are used to **make HTTPS requests** within the EWP
-   Network.
-
-Implementers MAY use the same certificate for both purposes, but it is NOT
-REQUIRED.
-
-
-#### Server certificates
-
-These are just "regular" SSL certificates, that is - they are bound to your
-domain, and are signed by a trusted CA. Neither the clients nor the registry
-will be storing your server certificates - they will be validated "the regular
-HTTPS way" (via CA signature).
-
-All implemented APIs MUST be served via the HTTPS protocol. This allows the
-clients to verify that responses come from the proper source.
-
-Note, that APIs can be spread across multiple domains (and all these domains
-will be referenced in the `<apis-implemented>` section of the
-[Manifest file][discovery-api]). The number of domains used to implement EWP
-does not matter, but all of them need to be protected by proper certificates
-issued for these domains.
-
-
-#### Client certificates
-
-Each EWP Host declares (via its [Manifest file][discovery-api]) a list of
-certificates it will use for making requests to other hosts. This list is
-later fetched by registry, and the **fingerprints** of these certificates are
-served to all interested parties to see (see [Registry API][registry-api] for
-details).
-
-All of your clients are required to use one of such published client
-certificates when making requests within the EWP Network. Once the server
-confirms that the client is in possession of a proper private key of the
-certificate (this is the part of the TLS Handshake), it is then able to
-identify (with the help of the Registry again) which HEIs such client covers.
-
-This setup has many advantages:
-
- * During development stages, it allows developers to generate their own
-   self-signed certificates and install them in their browsers for debugging
-   purposes.
-
- * If a single EWP Host changes its client certificate, but forgets to update
-   its manifest, then only this single EWP Host will be affected.
-
- * You may delegate the duty of serving some of your APIs directly to a third
-   party (no proxy needed), but still keep the client credentials for yourself
-   (the third party won't be able to perform requests in the EWP Network unless
-   it holds a private key for at least one of the certificates present in your
-   manifest).
-
- * Similarly, if you are a SAAS provider, you can delegate the permission of
-   making requests *in the name of a single HEI* to one of your clients (as
-   opposed to a permission to make requests in the name of all of your covered
-   HEIs).
-
-
-### Should I verify *all* requests?
-
-No. Just some.
-
-Every API defines its own security requirements. In most cases it *will* be
-REQUIRED for the EWP Host to verify its requester, but in some other cases
-(e.g. the Discovery Manifest API) it will be the opposite - some requests MUST
-be allowed to be performed by **anonymous** requesters (with no client
-certificate).
-
-Here are some examples of security policies we might use:
-
- * **Anonymous access**: The request can be made by anyone. The client does not
-   need to use any SSL certificate.
-
- * **Access to anyone from within the EWP Network**: Clients are required to
-   use a proper certificate when performing requests.
-
- * **Access to anyone who covers a specific HEI**: Clients are required to use
-   a proper certificate when performing requests, and this certificate must
-   belong to an EWP Host associated with particular HEI. Other EWP Hosts will
-   not be able to access the resource. (This will probably be the most common
-   policy across EWP APIs, as the project focuses on exchanging data between
-   HEIs.)
-
-Please review the [Echo API][echo-api] specs for a more detailed explanation of
-the request-validation process.
-
-
-### Should I verify *all* responses?
-
-Yes.
-
-It is RECOMMENDED for all EWP Clients to verify the SSL server certificates
-when retrieving responses from other EWP Hosts. You will use just the "regular"
-SSL verification (you do not need to analyze server certificates manually, as
-you do in case of client certificates). You simply need to check if the
-server's certificate is valid (signed by a trusted CA).
-
-
 Other Recommendations
 ---------------------
 
+### Recommendations or requirements?
+
 It is true, that this chapter describes general EWP Network recommendations,
 **not requirements**. This means that it is perfectly okay to use EWP Registry
-to publish an API that doesn't follow the following guidelines.
+to publish an API that *doesn't* follow these guidelines.
 
-However, it is also true, that many EWP APIs explicitly REQUIRE these
+However, it is also true, that most EWP APIs explicitly REQUIRE these
 guidelines to be followed - it is a per-API design decision. In other words,
-**you still MUST follow these guidelines** when implementing most of the APIs.
+**you still MUST follow these guidelines** when implementing most of EWP APIs!
 
 
 <a name='error-handling'></a>
