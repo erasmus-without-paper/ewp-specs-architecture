@@ -652,6 +652,36 @@ There are a couple of reasons for this design:
    easier for the client implementers.
 
 
+<a name="index-pulling"></a>
+
+#### Index-pulling and `modified_since`
+
+As we have already mentioned above:
+
+ * We can never be 100% sure that all CNR notifications were delivered.
+
+ * There's always the possibility of CNR failure (i.e. the server is
+   temporarily down and cannot receive CNR notifications).
+
+ * We need a way for "initial synchronization" (when we are starting from
+   scratch, and we want to fetch the full set of changes).
+
+For these reasons, clients will sometimes need to "refresh" their copy of
+the data. Some clients may do this every night, others might choose to do this
+only after some critical hardware failures.
+
+Most EWP APIs allow to achieve this effect by calling the `index` endpoint of
+an API (and thus retrieving the full list of current entity IDs), and then
+calling the `get` endpoint with all the retrieved IDs. This process may be
+costly, if the number of IDs is large. To prevent "DDoS-ing" each other's
+servers, most `index` endpoints allow the clients to use the `modified_since`
+parameter, which causes only a small subset of IDs to be returned by the server
+- only the ones that were actually changed since the specified date.
+
+It is RECOMMENDED for all servers to support this `modified_since` parameter.
+By doing so, we are preventing lots of unnecessary network traffic!
+
+
 [discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery
 [develhub]: http://developers.erasmuswithoutpaper.eu/
 [statuses]: https://github.com/erasmus-without-paper/ewp-specs-management/blob/stable-v1/README.md#statuses
