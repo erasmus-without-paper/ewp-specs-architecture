@@ -69,7 +69,7 @@ Datatypes* document, starting from its first released version.
 1.4.0
 -----
 
-* More simple data types added to `common-types.xsd`: `UUID`, `EfqLevel`,
+* More simple data types added to `common-types.xsd`: `UUID`, `EqfLevel`,
   `CefrLevel`, `Gender`.
 * Added a note in `common-types.xsd` explaining why we keep it in the
   *Architecture and Security* document (this was the name of this document at
