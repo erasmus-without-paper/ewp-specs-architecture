@@ -284,26 +284,31 @@ of the EWP APIs whenever an error occurs.
    [common-types.xsd](common-types.xsd) file.
 
    - If there's reason to suspect that the invalid parameters **might have**
-     come from the the user, not the developer, then the server SHOULD also
+     been caused by the user, not the developer, then the server SHOULD also
      include the `<user-message>` element in its `<error-response>`. This way,
      the client will be able to inform his user what he did wrong.
 
-     Note, that some APIs don't specify exactly how the input should look like.
-     This means that server implementers are free to choose some things on
-     their own (e.g. the maximum length of a comment, the valid preconditions
-     for approving a nomination, etc.). In such cases the client implementers
-     cannot be blamed for the fact that they allowed their users to send such
-     "invalid" data (because neither them, not their users know about those
-     extra limitations). And that's exactly when the `<user-message>` element
-     is handy.
+     **How to tell the difference?** First, you should note, that some APIs
+     *don't* specify some things *exactly*. This means that server
+     implementers are free to choose some things on their own (e.g. the maximum
+     length of a comment, the valid preconditions for approving a nomination,
+     etc.). In such cases the client implementers cannot be blamed for the fact
+     that they allowed their users to send such "possibly invalid" data
+     (because neither them, not their users *know* about those extra
+     limitations). And that's exactly when the `<user-message>` element comes
+     handy. It allows the users and client developers to send invalid data
+     sometimes, but it also allows those users to be instructed (directly by
+     the server) about what they did wrong. For example: *Sorry, but University
+     of Warsaw doesn't allow comments longer than 1000 characters. Please make
+     your comment shorter and repeat your request.*
 
    - There's also one special scenario caused by invalid parameters, which is
      related to [edit conflicts](https://en.wikipedia.org/wiki/Edit_conflict).
-     These errors can appear in some APIs, but only those in which the client
-     is allowed to change something on the server. When edit conflicts are
-     detected, the server MUST respond with the **HTTP 409** error status (see
-     also [here][http-409]), along with a proper message for the user (the
-     `<user-message>` element SHOULD be included in this case).
+     These conflicts can appear in some APIs, but only those in which the
+     client is allowed to *change* something on the server. When edit conflicts
+     are detected, the server MUST respond with the **HTTP 409** error status
+     (see also [here][http-409]), preferrably along with some message for the
+     user (the `<user-message>` element).
 
      Any possible edit conflicts SHOULD be described in respective APIs. For
      example, see the `update` endpoint of the [Outgoing Mobilities
