@@ -312,7 +312,7 @@ of the EWP APIs whenever an error occurs.
 
      Any possible edit conflicts SHOULD be described in respective APIs. For
      example, see the `update` endpoint of the [Outgoing Mobilities
-     API][mobilities-api].
+     API][omobilities-api].
 
  * If some other **server error** occurs while processing the request (i.e.
    uncaught exception), then servers MUST respond with the **HTTP 500** status,
@@ -724,4 +724,4 @@ By doing so, we are preventing lots of unnecessary network traffic!
 [master-slave]: https://en.wikipedia.org/wiki/Master/slave_(technology)
 [error-signing]: https://github.com/erasmus-without-paper/ewp-specs-sec-intro#error-signing
 [http-409]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.10
-[mobilities-api]: https://github.com/erasmus-without-paper/ewp-specs-api-mobilities
+[omobilities-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobilities
