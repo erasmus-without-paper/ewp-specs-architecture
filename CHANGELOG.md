@@ -5,12 +5,27 @@ This document describes all the changes made to the *Architecture and Common
 Datatypes* document, starting from its first released version.
 
 
+1.9.0
+-----
+
+* Added details on error handling:
+
+  - Described when to use the `user-message` field (on possible edit
+    conflicts).
+  - Described when to encrypt error responses (when the client requests the
+    responses to be encrypted).
+
+* Described the index-pulling practice.
+
+* Spelling fixes (efq->eqf), formatting fixes, updated links.
+
+
 1.8.0
 -----
 
 * Removed the *Security and Authentication* section. The contents of this
-  section were moved to separate documents ([details]
-  (https://github.com/erasmus-without-paper/ewp-specs-architecture/issues/21)).
+  section were moved to separate documents
+  ([details](https://github.com/erasmus-without-paper/ewp-specs-architecture/issues/21)).
 
   * As a result, renamed the document to **Architecture and Common Datatypes**
     (previous name was **Architecture and Security**).
@@ -144,10 +159,10 @@ Datatypes* document, starting from its first released version.
 -----
 
 * Fixed links and XML namespaces
-  ([details] (https://github.com/erasmus-without-paper/general-issues/issues/4)).
+  ([details](https://github.com/erasmus-without-paper/general-issues/issues/4)).
 
 * Got rid of the misleading "request signing" term
-  ([details] (https://github.com/erasmus-without-paper/ewp-specs-api-echo/issues/1)).
+  ([details](https://github.com/erasmus-without-paper/ewp-specs-api-echo/issues/1)).
 
 * Added further clarification on server and client certificates.
 
