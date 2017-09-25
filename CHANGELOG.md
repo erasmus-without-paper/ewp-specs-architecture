@@ -5,6 +5,12 @@ This document describes all the changes made to the *Architecture and Common
 Datatypes* document, starting from its first released version.
 
 
+1.10.0
+------
+
+* New `simpleType` added to `common-types.xsd`: `Sha256Hex`.
+
+
 1.9.0
 -----
 
