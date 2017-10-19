@@ -265,11 +265,29 @@ of the EWP APIs whenever an error occurs.
    with the `<error-response>` root element, as defined in the
    [common-types.xsd](common-types.xsd) file.
 
- * If the client **doesn't have access** to the resource (or didn't provide his
-   credentials, i.e. SSL client certificate), then servers MUST respond with
-   the HTTP 4xx status (**HTTP 403** preferred), and the response SHOULD
-   contain an XML content with the `<error-response>` root element, as defined
-   in the [common-types.xsd](common-types.xsd) file.
+ * If the service is available only for some clients, and the client didn't
+   authenticate himself properly (e.g. didn't provide TLS Client Certificate,
+   or didn't sign his request with HTTP Signature), then servers MUST respond
+   with the HTTP 4xx status, and the response SHOULD contain an XML content
+   with the `<error-response>` root element, as defined in the
+   [common-types.xsd](common-types.xsd) file.
+
+   Which HTTP 4xx status should you choose? In theory, **HTTP 401** should be
+   used in this case (along with a proper `WWW-Authenticate` header). However,
+   some client authentication schemes didn't define how `WWW-Authenticate`
+   should look like in their case. For this reason, it RECOMMENDED to:
+
+   - Use HTTP 401 + `WWW-Authenticate` header **only if** the client
+     authentication specs clearly define how it should look like (e.g. HTTP
+     Signature Client Authentication).
+
+   - Use HTTP 403 if no clear definition exists, or you are not sure if it does
+     (e.g. TLS Client Certificate Authentication).
+
+ * If the client it authenticated, but **doesn't have access** to the resource,
+   then servers MUST respond with the HTTP 4xx status (**HTTP 403** preferred),
+   and the response SHOULD contain an XML content with the `<error-response>`
+   root element, as defined in the [common-types.xsd](common-types.xsd) file.
 
  * If the client used an **inappropriate HTTP method** (e.g. GET, when only
    POST is allowed), then servers MUST respond with the HTTP 4xx status
