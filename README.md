@@ -659,6 +659,8 @@ It works like this:
    information to choose different refresh strategies per each partner.
 
 
+<a name="bad-cnr-request"></a>
+
 #### What constitutes a "bad CNR request"?
 
 Once a CNR API server receives a HTTP client request with with a change
@@ -688,23 +690,27 @@ with HTTP 4xx response, and when it MUST respond with the HTTP 200?
    a valid change notification (and respond with a HTTP 200 response).
 
  * Sending the ID of an "invalid entity" is also NOT a bad request. CNR APIs
-   MUST respond with HTTP 200 whenever the change notification is **received
-   and understood**. The inability of actually "refreshing" the information
-   does not constitute a bad CNR request, even when this inability is the
-   sender's fault.
+   MUST respond with HTTP 200 whenever the change notification is "received
+   and understood". Refreshing the data is *not* part of this "receiving and
+   understanding", and the inability of actually refreshing the information
+   DOES NOT constitute a bad CNR request (even when this inability is caused by
+   the same team of programmers who send you the notification).
 
-   **Example:** Let's say that the sender has a bad `get` endpoint, which
-   always responds with corrupted data. This sender sends a valid change
-   notification, this notification is received and understood, but the receiver
-   is unable to refresh the new data, because the `get` endpoint is broken.
-   Such synchronization obviously is broken, and it is the sender's fault.
-   However, the sender is still sending a **completely valid** change
-   notification (and the broken `get` endpoint is a separate part of the
-   system). This specification states that it is still REQUIRED for the
-   receiver to respond with HTTP 200 for such requests. (The receiver
-   implementer should contact the implementers of the `get` endpoint, and
-   notify them about this error, but he MUST NOT respond with HTTP 4xx in his
-   CNR API.)
+   **Example:**
+
+   Let's say HEI X has a bad `get` IIAs API endpoint, which always responds
+   with corrupted data (e.g. invalid XML namespace). When IIAs are changed, X
+   sends a change notification, and this notification is "received and
+   understood" by Y, but Y is unable to fetch the fresh data, because X's `get`
+   endpoint responds with invalid data.
+
+   Such synchronization obviously is broken, and HEI X is to blame for that.
+   However, X is still sending a **completely valid** change notification. The
+   broken `get` endpoint does not prevent that, as it is a separate part of the
+   system. *This CNR specification states that it is still REQUIRED for the
+   receiver Y to respond with HTTP 200 for such requests.* (Y may later send
+   an email to X, and notify them about their error, but Y MUST NOT respond
+   with HTTP 4xx for such requests.)
 
  * Sending a request with a `GET` method, or sending a `POST` request with
    invalid content type, missing required parameters, missing authentication
