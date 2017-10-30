@@ -536,7 +536,7 @@ pattern](https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern),
 which also happens to fit well with our architecture and terminology.
 
 
-#### Client part (receiving notifications)
+#### Server part (receiving notifications)
 
 If EWP Host `Y` wants to receive notifications from other hosts, it indicates
 so by implementing a chosen CNR API (depending on the type of entity they would
@@ -549,13 +549,15 @@ notifications](https://en.wikipedia.org/wiki/Push_technology).
 
 However, it's worth noting that `X` will not necessarily be required to
 actually *send* the notifications (even if all other EWP Hosts are ready to
-receive them). Server implementers MAY choose to implement only a subset of
-push notifications, or even not implement them at all (thus forcing the other
-side to periodically pull the data instead). **The possibility of network
-failures and programming errors are also valid issues to expect.**
+receive them). In EWP, we allow client implementers to implement only a subset
+of push notifications, or even not implement them at all (thus forcing the
+other side to periodically pull the data instead). **There's also the
+possibility of network failures and programming errors - you should always be
+prepared for such things.**
 
-This means that - as a client - you MUST NOT truly rely that implementing CNR
-APIs is sufficient to keep your copy of the data up-to-date. You SHOULD either:
+All this means that - as the notification receiver - you MUST NOT assume
+that implementing CNR APIs is sufficient to keep your copy of the data
+up-to-date. You SHOULD either:
 
  * Avoid storing the data permanently (i.e. avoid keeping it in the database).
    Instead, you might want to *cache it*, and clear the cache after some time,
@@ -574,8 +576,26 @@ APIs is sufficient to keep your copy of the data up-to-date. You SHOULD either:
    users much easier when they are having a live conversation with each other
    over the phone.
 
+There are two basic approaches of implementing CNR APIs:
 
-#### Server part (sending notifications)
+ * **Queue:** Once you receive a change notification, you respond with HTTP
+   200, and add the received identifiers to a queue. Later on, in the
+   background, you will attempt to update your locally stored information on
+   the received entities (e.g. by calling the `get` endpoints of the APIs which
+   describe this entity).
+
+ * **Cache:** Once you receive a change notification, you respond with HTTP
+   200, and clear the current values for the received entities from your cache.
+   This will force other parts of your system to fetch fresh data on this
+   entity next time it is needed.
+
+You SHOULD NOT try to refresh your data *before* sending your CNR API response.
+Refreshing the data (e.g. calling the `get` endpoint) is a separate operation,
+and the result of this operation MUST NOT influence the HTTP response of your
+CNR API (see *What constitutes a "bad CNR request"* section below).
+
+
+#### Client part (sending notifications)
 
 In principle, it seems simple - when an EWP Host `X` wants to broadcast a
 notification, then:
@@ -584,7 +604,7 @@ notification, then:
  * It pushes (sends a POST request) proper notifications at the listening URLs.
 
 This process however is not as simple as it sounds. In order for this model
-to work faultlessly, the server SHOULD also gracefully handle temporary I/O
+to work faultlessly, the client SHOULD also gracefully handle temporary I/O
 errors (caused by, for example, a malfunction on the receiver's servers, or a
 misconfiguration on the sender's network, etc.). And this means that you SHOULD
 have a specialized queue-based component for the job. Let's call it an **EWP
@@ -595,16 +615,18 @@ Notification Sender Daemon**.
 It works like this:
 
  * Once you detect a change in one of your entities, you push its ID to the
-   queue. If is recommended for the queue to be backed by a persistent storage
+   queue. It is recommended for the queue to be backed by a persistent storage
    engine (e.g. a separate table in a database), to avoid missing notifications
    after service is restarted.
 
-   Note that creating or deleting an entity also counts as a change. It's still
-   enough to send the ID of the changed entity only (you don't need to store
-   the type of this change). For example, if an IIA draft is deleted, and the
-   clients receives an IIA CNR with the ID of this deleted IIA, then he will be
-   able to determine that it indeed has been deleted (by querying IIAs API and
-   receiving no matching IIA).
+   Note that creating or deleting an entity also counts as a "change". Change
+   notifications don't directly tell the receiver about what happened to the
+   entity. In particular, there's no information about whether it has been
+   created, deleted or updated. Change notifications contain *only* the ID of
+   the changed entity. This is not a problem though. For example, if an IIA
+   draft is deleted, and the server receives an IIA CNR with the ID of this
+   deleted IIA, then he will be able to determine that it indeed has been
+   deleted - by querying IIAs API and receiving no matching IIA.
 
  * Notification Sender actively watches the queue for the list of changed
    IDs, it also watches the Registry Service for the list of the listening CNR
@@ -613,8 +635,9 @@ It works like this:
 
    The sender is allowed to postpone sending some notifications so that it will
    later be able to send them in bulk (e.g. to reduce bandwidth usage).
-   However, please note, that all such delays may reduce user-experience. It
-   is not recommended to delay notifications for longer than 5 minutes.
+   However, please note, that all such delays may diminish user-experience. It
+   is NOT RECOMMENDED to delay sending notifications for periods longer than
+   5 minutes.
 
  * If CNR API doesn't respond, or it responds with a HTTP 5xx error, then the
    sender SHOULD retry delivering the notification after some time.
@@ -624,11 +647,70 @@ It works like this:
    strategy when repeating your requests. Undelivered requests MAY expire after
    some time (e.g. 24 hours).
 
+ * If CNR API responds with HTTP 4xx error, then the server indicates that
+   there's something wrong with the client's request, and such requests should
+   not be repeated. Instead, this event should be logged and investigated. See
+   *What constitutes a "bad CNR request"* section below.
+
  * Additionally, the server also publishes the information that it has
    implemented the notification-sending feature by adding a proper
    `<sends-notifications/>` element to respective entity serving APIs (see
    `manifest-entry.xsd` files in respective APIs). Clients MAY use this
    information to choose different refresh strategies per each partner.
+
+
+#### What constitutes a "bad CNR request"?
+
+Once a CNR API server receives a HTTP client request with with a change
+notification, it can respond in a couple of ways:
+
+ * **HTTP 200** - this means that it has properly received the request, and
+   understood its meaning. The client SHOULD NOT repeat this request.
+
+ * **HTTP 4xx** - if there's something wrong with the request. For example,
+   the client is not authenticated, or not authorized, or the request is in an
+   invalid format. The client SHOULD NOT repeat this request (because the
+   server will always treat it as a bad request).
+
+ * **HTTP 5xx** - if there was a problem on the server side, and the request
+   was not properly received. The client SHOULD repeat this request (because
+   the problem is temporary, and the server will eventually be able to process
+   it).
+
+In order for the server/client contract to work smoothly, we must explicitly
+define what **exactly** constitutes a bad request. When the server MAY respond
+with HTTP 4xx response, and when it MUST respond with the HTTP 200?
+
+ * Sending an unknown or non-existing entity ID is NOT a bad request. As we
+   already know, this may mean that that a new entity has been created, or
+   deleted. In particular, it's also possible that it has been created *and*
+   deleted - both in a matter of milliseconds. The receiver MUST treat this as
+   a valid change notification (and respond with a HTTP 200 response).
+
+ * Sending the ID of an "invalid entity" is also NOT a bad request. CNR APIs
+   MUST respond with HTTP 200 whenever the change notification is **received
+   and understood**. The inability of actually "refreshing" the information
+   does not constitute a bad CNR request, even when this inability is the
+   sender's fault.
+
+   **Example:** Let's say that the sender has a bad `get` endpoint, which
+   always responds with corrupted data. This sender sends a valid change
+   notification, this notification is received and understood, but the receiver
+   is unable to refresh the new data, because the `get` endpoint is broken.
+   Such synchronization obviously is broken, and it is the sender's fault.
+   However, the sender is still sending a **completely valid** change
+   notification (and the broken `get` endpoint is a separate part of the
+   system). This specification states that it is still REQUIRED for the
+   receiver to respond with HTTP 200 for such requests. (The receiver
+   implementer should contact the implementers of the `get` endpoint, and
+   notify them about this error, but he MUST NOT respond with HTTP 4xx in his
+   CNR API.)
+
+ * Sending a request with a `GET` method, or sending a `POST` request with
+   invalid content type, missing required parameters, missing authentication
+   credentials, invalid HTTP signatures etc. - all these are "true" bad
+   requests. (Note however, that none of these errors depend on the IDs of the
+   sent entities!)
 
 
 #### Why "change notifications" instead of actual "changes"?
@@ -696,9 +778,9 @@ There are a couple of reasons for this design:
 
  * It's **generally easier to implement for the sending party**. Generating
    more detailed notifications with diff-like descriptions of all the changed
-   properties is obviously a harder job. And, in EWP, we [slightly favor making
-   the job easier for server implementers][favoritism], rather than making it
-   easier for the client implementers.
+   properties is obviously a harder job, and it's often unnecessary (because,
+   due to possible network failures, this job will have to be repeated on the
+   receiver's side anyway).
 
 
 <a name="index-pulling"></a>
