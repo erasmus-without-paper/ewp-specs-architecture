@@ -310,10 +310,12 @@
             <xs:documentation>
                 CEFR level code. CEFR levels are used to represent a skill of a language.
                 https://en.wikipedia.org/wiki/Common_European_Framework_of_Reference_for_Languages
+
+                We also allow unofficial "NS" code for "native speaker" language level.
             </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
-            <xs:pattern value="[ABC][12]"/>
+            <xs:pattern value="[ABC][12]|NS"/>
         </xs:restriction>
     </xs:simpleType>
 
