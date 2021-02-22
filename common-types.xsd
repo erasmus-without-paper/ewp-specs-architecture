@@ -294,7 +294,7 @@
         <xs:annotation>
             <xs:documentation>
                 EQF Level. In EWP it is typically used to represent study levels (also known as
-                study cycles), i.e. Bachelor is 6, Master is 7, and Doctorate is 8.
+                study cycles), i.e. Short is 5, Bachelor is 6, Master is 7, and Doctorate is 8.
                 Descriptions of all the levels can be found here:
                 https://en.wikipedia.org/wiki/European_Qualifications_Framework
             </xs:documentation>
