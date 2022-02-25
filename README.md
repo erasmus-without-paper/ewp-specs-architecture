@@ -88,36 +88,32 @@ allowing communication between them.
 In order for the HEI to benefit from the EWP Project, it needs to be covered by
 an EWP Host which implements some APIs.
 
- * A single **EWP Host** describes **a set of HEIs along with a set of
-   implemented APIs**. We will describe the APIs in a moment. For now, let's
-   focus on the HEIs. In the picture below, Host 1 **covers** institutions A, B
-   and C, while institutions D and E are being covered by Host 2. Institution F
-   is not covered by any host in the EWP network.
-
- * In some countries, there will be only a single EWP Host per country. In
-   other countries every HEI will run its own EWP Host. Other more complex
-   topologies are also possible (see [below](#network-topologies)).
+A single **EWP Host** describes **a set of HEI along with a set of
+implemented APIs**. We will describe the APIs in a moment. For now, let's
+focus on the HEIs. In the picture below, Host 1 **covers** institution A,
+while institution B is being covered by Host 2. Institution C
+is not covered by any host in the EWP network.
 
 ![HEIs have been covered by two EWP Hosts](images/diagram-step2.png)
 
 
 ### APIs
 
-Apart from covering some HEIs, EWP Host also *implements* some APIs (for the
-HEIs it covers). EWP Hosts are **not required** to implement *all* features of
+Apart from covering a HEI, EWP Host also *implements* some APIs.
+EWP Hosts are **not required** to implement *all* features of
 the EWP Network. Each host can implement a different set of APIs. **They can
 also expose APIs unrelated to EWP** (we do not enforce *any* requirements on
 such APIs).
 
 ![Some APIs have been connected to both EWP Hosts](images/diagram-step3.png)
 
-Let's say that HEI B wants to fetch some data from the EWP Network.
+Let's say that HEI A wants to fetch some data from the EWP Network.
 
- * HEI B **knows** which API it wants to use, and it knows the ID of the HEI it
-   wants to retrieve the data from (let's say it's HEI D).
+ * HEI A **knows** which API it wants to use, and it knows the ID of the HEI it
+   wants to retrieve the data from (let's say it's HEI B).
 
- * HEI B **does not know** (yet) if HEI D implements the needed API and at
-   which URL it is being served. (It doesn't even know yet if HEI D is *being
+ * HEI A **does not know** (yet) if HEI B implements the needed API and at
+   which URL it is being served. (It doesn't even know yet if HEI B is *being
    covered* in the EWP Network at all.)
 
 Host 1 needs the **Registry Service** in order to answer these questions.
@@ -153,8 +149,8 @@ secure than updating the registry manually.
 
 Let's continue the example use case we have started to describe earlier.
 
-**HEI B** calls the EWP Registry Service. The Registry Service keeps track
-of all the HEIs and their APIs. Given the Registry response, HEI B is now able
+**HEI A** calls the EWP Registry Service. The Registry Service keeps track
+of all the HEIs and their APIs. Given the Registry response, HEI A is now able
 to determine which URL it needs to call in order to get the data. (In our
 simple case, this URL will be served by Host 2.)
 
@@ -163,7 +159,7 @@ which URL to call, is part of the [Registry API specification][registry-api].
 
 **Side-note** (for geeks only): Technically speaking, the Registry Service is
 *also* an API, and it is also embedded inside its own EWP Host, like all the
-other APIs. However, Registry's *EWP Host* does not cover any real HEIs and it
+other APIs. However, Registry's *EWP Host* does not cover a HEI and it
 does not implement any other APIs (except the [Registry API][registry-api]).
 Also the URLs at which the Registry API is implemented cannot change. So it's
 quite different from all other EWP Hosts.
@@ -171,46 +167,11 @@ quite different from all other EWP Hosts.
 ![Registry Service and information flow](images/diagram-step4.png)
 
 
-### How HEIs are covered by EWP Hosts
-
-The picture above can be a bit misleading. You might think that all HTTP
-requests in the EWP Network always originate from a single requesting HEI
-(because both light-blue lines start at HEI B in the picture). This is not the
-case.
-
-Non-anonymous requests in the EWP Network are performed with use of client
-credentials. Each set of client credentials is connected with a **group of
-HEIs**. So:
-
- * When Host 2 receives the request as pictured above, then - at first (based
-   on the credentials used) - it only knows that it came from Host 1, not from
-   HEI B in particular.
-
- * If the requested set of data should be visible to HEI B only (not HEI A nor
-   C), then the requested API will often require an extra parameter to be
-   provided along with each request to this API (e.g. `requesting_hei_id`).
-
- * Similarly, if the data HEI B is asking for is related to HEI D only, and the
-   host is not able to deduce this fact from other parameters, then the API
-   will also often require another parameter which will help the Host to
-   identify the HEI which to pull the data from (e.g. `responding_hei_id`).
-
-This might be a bit confusing at first glance, but it shouldn't make your work
-any harder. And, in case of some partners, it may actually allow them to
-exchange data in a more efficient way.
-
-It's worth noting that we have considered simpler architectures too (e.g. one
-EWP Host per HEI), but we have concluded that some partners are willing to
-leverage this more flexible design. See
-[this thread](https://github.com/erasmus-without-paper/ewp-specs-api-echo/issues/3)
-if you're interested in the details.
-
-
 <a name='network-topologies'></a>
 
 ### More complex network topologies
 
-As we have indicated before, Registry Service allows HEI B to easily answer the
+As we have indicated before, Registry Service allows HEI A to easily answer the
 questions like "is API X implemented for HEI Y?" and "which URL is the API
 implemented at?". However, the network in our example is quite simple. EWP
 Hosts allow us to describe much more complex topologies.
@@ -228,14 +189,6 @@ servers), thus creating multiple EWP Hosts. This is allowed in the EWP Network
 from the client's view point - **the client only needs to know which URL to
 call** to get the data it needs, and it doesn't need to know which EWP Host
 serves this URL. See [Registry API] [registry-api] for examples.
-
-**Example 2:**
-
-If your institution covers multiple HEIs, but - for some reason - you can
-implement an API for only some of these HEIs, then you might want to split your
-EWP Host into a couple of smaller ones. In other words, you may choose to have
-a single EWP Host per a single HEI, even if you are a SAAS provider for
-multiple HEIs.
 
 
 Other Recommendations
