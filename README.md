@@ -167,6 +167,19 @@ quite different from all other EWP Hosts.
 ![Registry Service and information flow](images/diagram-step4.png)
 
 
+### How callers and receivers are identified
+
+Non-anonymous requests in the EWP Network are performed with use of client
+credentials. **Each set of client credentials, declared by an EWP host,
+MUST be uniquely associated with a specific HEI** (covered by that host).
+That provides the means to always identify the HEI sending the request (caller).
+
+On the other side, to be able to identify the HEI being called,
+**the receiver MUST uniquely associate an API with a URL (endpoint)**.
+
+Manifests that don't respect above requirements SHOULD NOT be accepted in the network.
+
+
 <a name='network-topologies'></a>
 
 ### More complex network topologies
