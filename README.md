@@ -545,17 +545,9 @@ CNR API is like "subscribing" to receive specific classes of notifications.
 In other words, **CNR APIs are simply callback URLs** for [push
 notifications](https://en.wikipedia.org/wiki/Push_technology).
 
-However, it's worth noting that `X` will not necessarily be required to
-actually *send* the notifications (even if all other EWP Hosts are ready to
-receive them). In EWP, we allow client implementers to implement only a subset
-of push notifications, or even not implement them at all (thus forcing the
-other side to periodically pull the data instead). **There's also the
-possibility of network failures and programming errors - you should always be
-prepared for such things.**
-
-All this means that - as the notification receiver - you MUST NOT assume
-that implementing CNR APIs is sufficient to keep your copy of the data
-up-to-date. You SHOULD either:
+**Please note that, there is always a possibility of network failures and programming errors - you should always be
+prepared for such things. This means that - as the notification receiver - you MUST NOT assume
+that implementing CNR APIs is sufficient to keep your copy of the data up-to-date**. You SHOULD either:
 
  * Avoid storing the data permanently (i.e. avoid keeping it in the database).
    Instead, you might want to *cache it*, and clear the cache after some time,
