@@ -4,6 +4,16 @@ Release notes
 This document describes all the changes made to the *Architecture and Common
 Datatypes* document, starting from its first released version.
 
+1.11.0
+------
+
+* Added chapter on identifying callers and receivers.
+* Imposed 1 to 1 communication in EWP.
+* Added info about EQL level code for short cycle mobilities.
+* Fixed #30 - clients are required to send CNRs for every API.
+* Allowed unofficial "NS" code for "native speaker" language level.
+* Added more details on CNR implementation and error handling.
+* Added preference for HTTP 401 when client is not authenticated.
 
 1.10.0
 ------
