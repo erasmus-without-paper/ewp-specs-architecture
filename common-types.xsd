@@ -364,6 +364,18 @@
         </xs:annotation>
     </xs:element>
 
+    <xs:element name="admin-provider" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>
+                Name of the EWP host provider and optionally name of the system software in parentheses.
+
+                This element was placed in the common-types namespace because it is being used
+                in multiple schemas throughout the EWP project (most notably, various sections
+                of the manifest file).
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
     <xs:element name="admin-notes" type="MultilineString">
         <xs:annotation>
             <xs:documentation>
