@@ -4,6 +4,13 @@ Release notes
 This document describes all the changes made to the *Architecture and Common
 Datatypes* document, starting from its first released version.
 
+
+1.12.0
+------
+
+* Added admin-provider element to common types.
+
+
 1.11.0
 ------
 
@@ -14,6 +21,7 @@ Datatypes* document, starting from its first released version.
 * Allowed unofficial "NS" code for "native speaker" language level.
 * Added more details on CNR implementation and error handling.
 * Added preference for HTTP 401 when client is not authenticated.
+
 
 1.10.0
 ------
