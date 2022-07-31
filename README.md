@@ -773,6 +773,26 @@ It is RECOMMENDED for all servers to support this `modified_since` parameter.
 By doing so, we are preventing lots of unnecessary network traffic!
 
 
+### EWP Statistics
+
+Multiple APIs MUST implement an endpoint which returns multiple different statistics. Specific schemas and types of data
+to be returned are documented separately for each API. Currently the APIs requiring statistics endpoint are:
+
+ * [IIA API][iia-api]
+ * [Outgoing LAs API][outgoing-la-api]
+ * [CNR LAs API][incoming-la-api] - This is intended for statistics about incoming LAs
+
+#### Response time
+
+Server SHOULD respond as fast as possible. This is why it is recommended to calculate statistics offline, rather than on request.
+If the statistics are calculated offline, server MUST refresh them at least once a month.
+It's also a reason why calculation date is included in the response.
+
+#### Permissions
+
+Server SHOULD make all endpoints regarding statistics public. Server MUST allow the EWP Stats Portal to access this endpoint (TODO: to be verified)
+
+
 [discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery
 [develhub]: http://developers.erasmuswithoutpaper.eu/
 [statuses]: https://github.com/erasmus-without-paper/ewp-specs-management/blob/stable-v1/README.md#statuses
@@ -786,3 +806,6 @@ By doing so, we are preventing lots of unnecessary network traffic!
 [master-slave]: https://en.wikipedia.org/wiki/Master/slave_(technology)
 [error-signing]: https://github.com/erasmus-without-paper/ewp-specs-sec-intro#error-signing
 [http-409]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.10
+[iia-api]: https://github.com/erasmus-without-paper/ewp-specs-api-iias
+[outgoing-la-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-las
+[incoming-la-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-la-cnr
