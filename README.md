@@ -775,7 +775,7 @@ By doing so, we are preventing lots of unnecessary network traffic!
 
 ### EWP Statistics
 
-Multiple APIs MUST implement an endpoint which returns multiple different statistics. Specific schemas and types of data
+Multiple APIs SHOULD implement an endpoint which returns multiple different statistics. Specific schemas and types of data
 to be returned are documented separately for each API. Currently the APIs requiring statistics endpoint are:
 
  * [IIA API][iia-api]
