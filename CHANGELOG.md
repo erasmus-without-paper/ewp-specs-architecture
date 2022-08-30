@@ -8,7 +8,7 @@ Datatypes* document, starting from its first released version.
 1.13.0
 ------
 
-* Added chapter talking about statistics endpoints.
+* Added chapter about statistics endpoints.
 
 
 1.12.0

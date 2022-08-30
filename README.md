@@ -780,7 +780,7 @@ to be returned are documented separately for each API. Currently the APIs requir
 
  * [IIA API][iia-api]
  * [Outgoing LAs API][outgoing-la-api]
- * [CNR LAs API][incoming-la-api] - This is intended for statistics about incoming LAs
+ * [CNR LAs API][cnr-la-api] - This is intended for statistics about incoming LAs
 
 #### Response time
 
@@ -790,8 +790,13 @@ It's also a reason why calculation date is included in the response.
 
 #### Permissions
 
-Server SHOULD make all endpoints regarding statistics public. Server MUST allow the EWP Stats Portal to access this endpoint (TODO: to be verified)
+Server MUST allow the EWP Stats Portal to access this endpoint. The EWP Stats Portal is identified by HEI id:
 
+```
+stats.erasmuswithoutpaper.eu
+```
+
+and it's public key can be taken from Registry API using this id.
 
 [discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery
 [develhub]: http://developers.erasmuswithoutpaper.eu/
@@ -808,4 +813,4 @@ Server SHOULD make all endpoints regarding statistics public. Server MUST allow 
 [http-409]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.10
 [iia-api]: https://github.com/erasmus-without-paper/ewp-specs-api-iias
 [outgoing-la-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-las
-[incoming-la-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-la-cnr
+[cnr-la-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-la-cnr
