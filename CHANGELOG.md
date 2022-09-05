@@ -5,6 +5,12 @@ This document describes all the changes made to the *Architecture and Common
 Datatypes* document, starting from its first released version.
 
 
+1.13.0
+------
+
+* Added chapter about statistics endpoints.
+
+
 1.12.0
 ------
 
