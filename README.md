@@ -776,11 +776,22 @@ By doing so, we are preventing lots of unnecessary network traffic!
 ### EWP Statistics
 
 Multiple APIs SHOULD implement an endpoint which returns multiple different statistics. Specific schemas and types of data
-to be returned are documented separately for each API. Currently the APIs requiring statistics endpoint are:
+to be returned are documented separately for each API. Currently, the APIs requiring statistics endpoint are:
 
  * [IIA API][iia-api]
  * [Omobility LAs API][omobility-la-api]
  * [Omobility LAs CNR API][omobility-la-cnr-api] - This is intended for statistics about incoming LAs
+
+Stats Portal will be gathering statistics periodically, on every 1st day of a month (starting from midnight).
+Nodes may calculate statistics on-line or off-line. If statistics are calculated off-line,
+they should be as fresh as possible on the day of request.
+
+Statistics will be gathered only from nodes implementing Discovery 6.0.0 or higher.
+
+If HEI changes provider, it should take data to the new provider and make them available in the network.
+This means in particular that all data should be included in the statistics provided by HEI from the new location.
+
+For LAs the smallest reported academic year should be 2021/2022. All earlier academic years, if present in data, will be skipped.
 
 #### Response time
 
