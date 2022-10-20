@@ -225,6 +225,8 @@ guidelines to be followed - it is a per-API design decision. In other words,
 This chapter describes general error handling rules, which are followed by most
 of the EWP APIs whenever an error occurs.
 
+When encountering any errors, clients in the EWP Network MUST call the [Monitoring API][monitoring-api].
+
  * If the service is **temporarily unavailable** for some reason (like
    maintenance), then servers MUST respond with the HTTP 5xx status
    (**HTTP 503** preferred), and the response MAY also contain an XML content
@@ -821,3 +823,5 @@ stats.erasmuswithoutpaper.eu
 [iia-api]: https://github.com/erasmus-without-paper/ewp-specs-api-iias
 [omobility-la-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-las
 [omobility-la-cnr-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-la-cnr
+[monitoring-api]: https://github.com/erasmus-without-paper/ewp-specs-api-monitoring
+
