@@ -557,8 +557,8 @@ CNR API (see *What constitutes a "bad CNR request"* section below).
 In principle, it seems simple - when an EWP Host `X` wants to broadcast a
 notification, then:
 
- * It first asks the Registry Service for the URLs of all related CNR APIs.
- * It pushes (sends a POST request) proper notifications at the listening URLs.
+ * It first asks the Registry Service for the URL of the related CNR API.
+ * It pushes (sends a POST request) proper notifications to that URL.
 
 This process, however, is not as simple as it sounds. In order for this model
 to work faultlessly, the client SHOULD also gracefully handle temporary I/O
