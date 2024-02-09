@@ -243,10 +243,10 @@ When encountering any errors, clients in the EWP Network MUST call the [Monitori
    Which HTTP 4xx status should you choose? In theory, **HTTP 401** should be
    used in this case (along with a proper `WWW-Authenticate` header). However,
    some client authentication schemes didn't define how `WWW-Authenticate`
-   should look like in their case. For this reason, it RECOMMENDED to:
+   should look like in their case. For this reason, it is RECOMMENDED to:
 
    - Use HTTP 401 + `WWW-Authenticate` header **only if** the client
-     authentication specs clearly define how it should look like (e.g. HTTP
+     authentication specs clearly define how it should look like (e.g., HTTP
      Signature Client Authentication).
 
    - Use HTTP 403 if no clear definition exists, or you are not sure if it does
