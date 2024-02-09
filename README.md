@@ -234,8 +234,8 @@ When encountering any errors, clients in the EWP Network MUST call the [Monitori
    [common-types.xsd](common-types.xsd) file.
 
  * If the service is available only for some clients, and the client didn't
-   authenticate himself properly (e.g. didn't provide TLS Client Certificate,
-   or didn't sign his request with HTTP Signature), then servers MUST respond
+   authenticate himself properly (e.g.,
+   didn't sign his request with HTTP Signature), then servers MUST respond
    with the HTTP 4xx status, and the response SHOULD contain an XML content
    with the `<error-response>` root element, as defined in the
    [common-types.xsd](common-types.xsd) file.
@@ -249,8 +249,7 @@ When encountering any errors, clients in the EWP Network MUST call the [Monitori
      authentication specs clearly define how it should look like (e.g., HTTP
      Signature Client Authentication).
 
-   - Use HTTP 403 if no clear definition exists, or you are not sure if it does
-     (e.g. TLS Client Certificate Authentication).
+   - Use HTTP 403 if no clear definition exists, or you are not sure if it does.
 
  * If the client it authenticated, but **doesn't have access** to the resource,
    then servers MUST respond with the HTTP 4xx status (**HTTP 403** preferred),
