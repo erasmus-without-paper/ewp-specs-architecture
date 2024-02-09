@@ -191,8 +191,8 @@ Hosts allow us to describe much more complex topologies.
 
 **Example 1:**
 
-API implementations can be hosted across multiple servers and/or domains (which
-might be convenient, especially if you work with multiple developer teams, each
+API implementations can be hosted across multiple servers and/or domains.
+This might be convenient, especially if you work with multiple developer teams, each
 one of which might want to use their favorite languages and environments.
 
 If you choose to implement your APIs on many servers, then **you might also
@@ -209,13 +209,13 @@ Other Recommendations
 
 ### Recommendations or requirements?
 
-It is true, that this chapter describes general EWP Network recommendations,
+This chapter describes general EWP Network recommendations,
 **not requirements**. This means that it is perfectly okay to use EWP Registry
 to publish an API that *doesn't* follow these guidelines.
 
-However, it is also true, that most EWP APIs explicitly REQUIRE these
+However, most EWP APIs explicitly REQUIRE these
 guidelines to be followed - it is a per-API design decision. In other words,
-**you still MUST follow these guidelines** when implementing most of EWP APIs!
+**you still MUST follow these guidelines** when implementing most of the EWP APIs!
 
 
 <a name='error-handling'></a>
