@@ -116,7 +116,7 @@ Let's say that HEI A wants to fetch some data from the EWP Network.
    which URL it is being served. (It doesn't even know yet if HEI B is *being
    covered* in the EWP Network at all.)
 
-Host 1 needs the **Registry Service** in order to answer these questions.
+Host 1 needs the **Registry Service** to answer these questions.
 
 
 <a name="registry"></a>
@@ -151,7 +151,7 @@ Let's continue the example use case we have started to describe earlier.
 
 **HEI A** calls the EWP Registry Service. The Registry Service keeps track
 of all the HEIs and their APIs. Given the Registry response, HEI A is now able
-to determine which URL it needs to call in order to get the data. (In our
+to determine which URL it needs to call to get the data. (In our
 simple case, this URL will be served by Host 2.)
 
 Detailed documentation on **how** to access the Registry, and how to determine
@@ -159,9 +159,9 @@ which URL to call, is part of the [Registry API specification][registry-api].
 
 **Side-note** (for geeks only): Technically speaking, the Registry Service is
 *also* an API, and it is also embedded inside its own EWP Host, like all the
-other APIs. However, Registry's *EWP Host* does not cover a HEI and it
+other APIs. However, Registry's *EWP Host* does not cover a HEI, and it
 does not implement any other APIs (except the [Registry API][registry-api]).
-Also the URLs at which the Registry API is implemented cannot change. So it's
+Also, the URLs at which the Registry API is implemented cannot change. So it's
 quite different from all other EWP Hosts.
 
 ![Registry Service and information flow](images/diagram-step4.png)
