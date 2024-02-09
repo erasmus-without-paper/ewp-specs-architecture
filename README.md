@@ -88,7 +88,7 @@ allowing communication between them.
 For the HEI to benefit from the EWP Project, it needs to be covered by
 an EWP Host which implements some APIs.
 
-A single **EWP Host** describes **a set of HEI along with a set of
+A single **EWP Host** describes **a single HEI along with a set of
 implemented APIs**. We will describe the APIs in a moment. For now, let's
 focus on the HEIs. In the picture below, Host 1 **covers** institution A,
 while institution B is being covered by Host 2. Institution C
