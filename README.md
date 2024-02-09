@@ -609,12 +609,6 @@ It works like this:
    not be repeated. Instead, this event should be logged and investigated. See
    *What constitutes a "bad CNR request"* section below.
 
- * Additionally, the server also publishes the information that it has
-   implemented the notification-sending feature by adding a proper
-   `<sends-notifications/>` element to respective entity serving APIs (see
-   `manifest-entry.xsd` files in respective APIs). Clients MAY use this
-   information to choose different refresh strategies per each partner.
-
 
 <a name="bad-cnr-request"></a>
 
