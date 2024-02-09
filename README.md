@@ -14,7 +14,7 @@ How to join the EWP Network?
 
 ### Quick start
 
-In order to join our network you'll need to:
+To join our network, you'll need to:
 
  * Publish a valid [Discovery Manifest][discovery-api] somewhere on your
    servers.
@@ -55,15 +55,15 @@ Network":
 To join EWP Developer Network, contact the dev-registry's administrators. You
 will find their email addresses in the [dev-registry's catalogue
 response][dev-catalogue-xml] (and if you're not sure how to read this XML, then
-your should read the rest of this document first).
+you should read the rest of this document first).
 
 
 ### Implementing APIs
 
 Having completed the "Quick Start" steps described above, you will become a
 member of the EWP Network, and you will be able to issue requests to other EWP
-members (retrieve information from **other** institutions). You will NOT
-however share any of **your** data yet - you'll need to implement some more
+members (retrieve information from **other** institutions). You will NOT,
+however, share any of **your** data yet - you'll need to implement some more
 APIs to do that.
 
 As part of the EWP project, we have designed a couple of APIs. Visit
@@ -85,7 +85,7 @@ allowing communication between them.
 
 ### EWP Hosts
 
-In order for the HEI to benefit from the EWP Project, it needs to be covered by
+For the HEI to benefit from the EWP Project, it needs to be covered by
 an EWP Host which implements some APIs.
 
 A single **EWP Host** describes **a set of HEI along with a set of
