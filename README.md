@@ -512,9 +512,9 @@ CNR API is like "subscribing" to receive specific classes of notifications.
 In other words, **CNR APIs are simply callback URLs** for [push
 notifications](https://en.wikipedia.org/wiki/Push_technology).
 
-**Please note that, there is always a possibility of network failures and programming errors - you should always be
+**Please note that there is always a possibility of network failures and programming errors - you should always be
 prepared for such things. This means that - as the notification receiver - you MUST NOT assume
-that implementing CNR APIs is sufficient to keep your copy of the data up-to-date**. You SHOULD either:
+that implementing CNR APIs is sufficient to keep your copy of the data up to date**. You SHOULD either:
 
  * Avoid storing the data permanently (i.e. avoid keeping it in the database).
    Instead, you might want to *cache it*, and clear the cache after some time,
@@ -522,9 +522,9 @@ that implementing CNR APIs is sufficient to keep your copy of the data up-to-dat
    re-fetch the fresh data whenever it is actually needed.
 
  * If you prefer keeping the data in the database, then you might keep a
-   "last confirmed" date along with it. Once the date get old, you may run a
+   "last confirmed" date along with it. Once the date gets old, you may run a
    background worker to refresh the stale data. It is recommended to do this
-   during the server night-time hours, and make use of the optimization
+   during the server nighttime hours, and make use of the optimization
    features such as the `modified_since` parameters (if present).
 
  * Regardless of which of the two methods above you choose, it is also
@@ -533,7 +533,7 @@ that implementing CNR APIs is sufficient to keep your copy of the data up-to-dat
    users much easier when they are having a live conversation with each other
    over the phone.
 
-There are two basic approaches of implementing CNR APIs:
+There are two basic approaches to implementing CNR APIs:
 
  * **Queue:** Once you receive a change notification, you respond with HTTP
    200, and add the received identifiers to a queue. Later on, in the
@@ -560,7 +560,7 @@ notification, then:
  * It first asks the Registry Service for the URLs of all related CNR APIs.
  * It pushes (sends a POST request) proper notifications at the listening URLs.
 
-This process however is not as simple as it sounds. In order for this model
+This process, however, is not as simple as it sounds. In order for this model
 to work faultlessly, the client SHOULD also gracefully handle temporary I/O
 errors (caused by, for example, a malfunction on the receiver's servers, or a
 misconfiguration on the sender's network, etc.). And this means that you SHOULD
