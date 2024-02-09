@@ -405,7 +405,7 @@ There's one more recommendation to consider:
 Most EWP API servers are required to keep
 [referential integrity][ref-integrity-wiki].
 
-Some partners might want to *not* expose all of their entities for EWP members.
+Some partners might want to *not* expose all of their entities to EWP members.
 They might want to expose only a selected subset of them (for example, only
 the courses conducted in English, or only the mobilities no older than a year,
 etc.).
@@ -422,7 +422,7 @@ via the Courses API, then you MUST NOT return a reference to
 `<los-id>X</los-id>` in *none of the other APIs* too. (Such visibility MAY vary
 on requester, but it MUST be consistent for any single requester.)
 
-Obviously, the easiest way to satisfy this requirement is to decide *not to
+The easiest way to satisfy this requirement is to decide *not to
 hide things* - then you won't have to worry if you leave a reference to it or
 not. *If* you decide to hide some entities however, then you MUST do this
 consistently.
@@ -434,7 +434,7 @@ consistently.
 
 As service providers, EWP Partners are in no position to tell their customers
 (HEIs) how long they have to keep their data. When a HEI decides to delete all
-personal data at the time where it is no longer needed, then its gone.
+personal data at the time when it is no longer needed, then its gone.
 
 However, what we can do is to RECOMMEND that such old entities should be kept
 online for at least some time before disappearing, so that all other partners
@@ -447,7 +447,7 @@ can realize what is happening.
    with a valid `X` mobility response **with the `cancelled` status**, rather
    than returning HTTP 400 with the message "X does not exist".
 
- * Such cancelled mobilities can of course be removed later in time, but they
+ * Such cancelled mobilities can, of course, be removed later in time, but they
    SHOULD NOT be removed instantly after they're cancelled. The same
    recommendation applies to all other entities.
 
