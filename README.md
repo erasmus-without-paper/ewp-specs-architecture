@@ -581,8 +581,8 @@ It works like this:
    entity. In particular, there's no information about whether it has been
    created, deleted or updated. Change notifications contain *only* the ID of
    the changed entity. This is not a problem though. For example, if an IIA
-   draft is deleted, and the server receives an IIA CNR with the ID of this
-   deleted IIA. The server will be able to determine that it indeed has been
+   draft is deleted, the server receives an IIA CNR with the ID of this
+   deleted IIA. The server will then be able to determine that it indeed has been
    deleted - by querying IIAs API and receiving no matching IIA.
 
  * Notification Sender actively watches the queue for the list of changed IDs.
