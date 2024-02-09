@@ -273,7 +273,7 @@ When encountering any errors, clients in the EWP Network MUST call the [Monitori
      include the `<user-message>` element in its `<error-response>`. This way,
      the client will be able to inform his user what he did wrong.
 
-     **How to tell the difference?** First, you should note, that some APIs
+     **How to tell the difference?** First, you should note that some APIs
      *don't* specify some things *exactly*. This means that server
      implementers are free to choose some things on their own (e.g. the maximum
      length of a comment, the valid preconditions for approving a nomination,
@@ -283,7 +283,7 @@ When encountering any errors, clients in the EWP Network MUST call the [Monitori
      limitations). And that's exactly when the `<user-message>` element comes
      handy. It allows the users and client developers to send invalid data
      sometimes, but it also allows those users to be instructed (directly by
-     the server) about what they did wrong. For example: *Sorry, but University
+     the server) about what they did wrong. For example, *Sorry, but University
      of Warsaw doesn't allow comments longer than 1000 characters. Please make
      your comment shorter and repeat your request.*
 
@@ -292,10 +292,10 @@ When encountering any errors, clients in the EWP Network MUST call the [Monitori
      These conflicts can appear in some APIs, but only those in which the
      client is allowed to *change* something on the server. When edit conflicts
      are detected, the server MUST respond with the **HTTP 409** error status
-     (see also [here][http-409]), preferrably along with some message for the
+     (see also [here][http-409]), preferably along with some message for the
      user (the `<user-message>` element).
 
-     Any possible edit conflicts SHOULD be described in respective APIs.
+     Any possible edit conflicts SHOULD be described in the respective APIs.
 
  * If some other **server error** occurs while processing the request (i.e.
    uncaught exception), then servers MUST respond with the **HTTP 500** status,
