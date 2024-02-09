@@ -308,10 +308,10 @@ In particular:
  * Whenever a client receives an unexpected **HTTP 4xx** error, it knows that
    there's some bug in its code which requires fixing.
 
- * Whenever a client receives a **HTTP 5xx** error, it knows that it's not "his
+ * Whenever a client receives an **HTTP 5xx** error, it knows that it's not "his
    fault", and that it can (often automatically) retry the request later on.
 
-It's worth noting, that error responses SHOULD attempt to follow all security
+It's worth noting that error responses SHOULD attempt to follow all security
 policies of the endpoint. For example, if the endpoint signs (and/or encrypts)
 all its regular HTTP 200 responses, then it also SHOULD sign (and/or encrypt)
 its HTTP 4xx and 5xx responses (with exactly the same algorithms it uses for
@@ -322,7 +322,7 @@ HTTP 200 responses). Read [this document][error-signing] for more information.
 
 ### Identifiers (surrogate vs. natural keys)
 
-Majority of our schemas require partners to supply both
+The majority of our schemas require partners to supply both
 [surrogate](https://en.wikipedia.org/wiki/Surrogate_key) and
 [natural](https://en.wikipedia.org/wiki/Natural_key) keys for their
 entities. **We refer to surrogate keys as "IDs"** (e.g. `los_id`), while
@@ -336,7 +336,7 @@ entities. **We refer to surrogate keys as "IDs"** (e.g. `los_id`), while
    Codes (natural keys) are not (it is RECOMMENDED to display them).
 
    * If a computer program wants to find an entity, **it will use the ID**.
-   * If a user wants to find an entity, he will use the **code**. (So, it's
+   * If a user wants to find an entity, they will use the **code**. (So, it's
      also RECOMMENDED to keep your codes short, simple and within the Latin
      alphabet).
 
@@ -355,7 +355,7 @@ entities. **We refer to surrogate keys as "IDs"** (e.g. `los_id`), while
    ```
 
  * If the partner's database stores **surrogate keys only**, then he MAY simply
-   supply his surrogate key in the code. It this case, it is recommended that
+   supply his surrogate key in the code. In this case, it is recommended that
    such surrogate keys are short (e.g. integers instead of UUIDs).
 
  * If the partner's database stores **natural keys only**, then he is REQUIRED
@@ -380,7 +380,7 @@ themselves (surrogate keys):
  * It is RECOMMENDED to avoid using punctuation and symbol characters.
 
 This allows implementers to easily store remote identifiers in a `varchar(64)`.
-Please note, that these limitations are for identifiers only, not the codes!
+Please note that these limitations are for identifiers only, not the codes!
 Codes MAY contain any range of Unicode characters, and EWP doesn't currently
 put any length limits on them.
 
@@ -388,7 +388,7 @@ There's one more recommendation to consider:
 
  * It is RECOMMENDED to make all your identifiers (surrogate keys)
    **universally** unique. Consider the advantages of this strategy when, for
-   example, two EWP HEIs decide to merge together (and such things do happen!).
+   example, two EWP HEIs decide to merge (and such things do happen!).
    [UUIDs](https://en.wikipedia.org/wiki/Universally_unique_identifier) (in
    their canonical form) are probably the most widely adopted format for
    universally unique identifiers.
