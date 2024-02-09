@@ -591,16 +591,16 @@ It works like this:
    that were changed.
 
    The sender is allowed to postpone sending some notifications so that it will
-   later be able to send them in bulk (e.g. to reduce bandwidth usage).
-   However, please note, that all such delays may diminish user-experience. It
+   later be able to send them in bulk (e.g., to reduce bandwidth usage).
+   However, please note that all such delays may diminish user experience. It
    is NOT RECOMMENDED to delay sending notifications for periods longer than
    5 minutes.
 
- * If CNR API doesn't respond, or it responds with a HTTP 5xx error, then the
+ * If CNR API doesn't respond, or it responds with an HTTP 5xx error, then the
    sender SHOULD retry delivering the notification after some time.
 
    To avoid unnecessary network traffic, it is recommended to use some kind of
-   an [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff)
+   [exponential backoff](https://en.wikipedia.org/wiki/Exponential_backoff)
    strategy when repeating your requests. Undelivered requests MAY expire after
    some time (e.g. 24 hours).
 
@@ -620,7 +620,7 @@ It works like this:
 
 #### What constitutes a "bad CNR request"?
 
-Once a CNR API server receives a HTTP client request with with a change
+Once a CNR API server receives an HTTP client request with a change
 notification, it can respond in a couple of ways:
 
  * **HTTP 200** - this means that it has properly received the request, and
@@ -641,7 +641,7 @@ define what **exactly** constitutes a bad request. When the server MAY respond
 with HTTP 4xx response, and when it MUST respond with the HTTP 200?
 
  * Sending an unknown or non-existing entity ID is NOT a bad request. As we
-   already know, this may mean that that a new entity has been created, or
+   already know, this may mean that a new entity has been created, or
    deleted. In particular, it's also possible that it has been created *and*
    deleted - both in a matter of milliseconds. The receiver MUST treat this as
    a valid change notification (and respond with a HTTP 200 response).
