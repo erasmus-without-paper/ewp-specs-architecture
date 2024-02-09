@@ -573,8 +573,8 @@ It works like this:
 
  * Once you detect a change in one of your entities, you push its ID to the
    queue. It is recommended for the queue to be backed by a persistent storage
-   engine (e.g. a separate table in a database), to avoid missing notifications
-   after service is restarted.
+   engine (e.g., a separate table in a database), to avoid missing notifications
+   after the service is restarted.
 
    Note that creating or deleting an entity also counts as a "change". Change
    notifications don't directly tell the receiver about what happened to the
@@ -582,11 +582,11 @@ It works like this:
    created, deleted or updated. Change notifications contain *only* the ID of
    the changed entity. This is not a problem though. For example, if an IIA
    draft is deleted, and the server receives an IIA CNR with the ID of this
-   deleted IIA, then he will be able to determine that it indeed has been
+   deleted IIA. The server will be able to determine that it indeed has been
    deleted - by querying IIAs API and receiving no matching IIA.
 
- * Notification Sender actively watches the queue for the list of changed
-   IDs, it also watches the Registry Service for the list of the listening CNR
+ * Notification Sender actively watches the queue for the list of changed IDs.
+   It also watches the Registry Service for the list of the listening CNR
    APIs, and then - for each listener - attempts to send it the list of all IDs
    that were changed.
 
