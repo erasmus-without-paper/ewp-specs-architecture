@@ -19,7 +19,7 @@ To join our network, you'll need to:
  * Publish a valid [Discovery Manifest][discovery-api] somewhere on your
    servers.
 
- * Send the URL of your manifest to the EWP Registry maintainers. It will be
+ * Register the URL of your manifest in the EWP Registration Portal. It will be
    stored in the EWP's [Registry Service][registry], allowing other partners to
    identify your HEIs and APIs, and verify your HTTP requests.
 
