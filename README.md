@@ -638,7 +638,7 @@ with HTTP 4xx response, and when it MUST respond with the HTTP 200?
    already know, this may mean that a new entity has been created, or
    deleted. In particular, it's also possible that it has been created *and*
    deleted - both in a matter of milliseconds. The receiver MUST treat this as
-   a valid change notification (and respond with a HTTP 200 response).
+   a valid change notification (and respond with an HTTP 200 response).
 
  * Sending the ID of an "invalid entity" is also NOT a bad request. CNR APIs
    MUST respond with HTTP 200 whenever the change notification is "received
@@ -650,23 +650,23 @@ with HTTP 4xx response, and when it MUST respond with the HTTP 200?
    **Example:**
 
    Let's say HEI X has a bad `get` IIAs API endpoint, which always responds
-   with corrupted data (e.g. invalid XML namespace). When IIAs are changed, X
+   with corrupted data (e.g., invalid XML namespace). When IIAs are changed, X
    sends a change notification, and this notification is "received and
    understood" by Y, but Y is unable to fetch the fresh data, because X's `get`
    endpoint responds with invalid data.
 
-   Such synchronization obviously is broken, and HEI X is to blame for that.
+   Such synchronization is broken, and HEI X is to blame for that.
    However, X is still sending a **completely valid** change notification. The
    broken `get` endpoint does not prevent that, as it is a separate part of the
    system. *This CNR specification states that it is still REQUIRED for the
-   receiver Y to respond with HTTP 200 for such requests.* (Y may later send
-   an email to X, and notify them about their error, but Y MUST NOT respond
+   receiver Y to respond with HTTP 200 for such requests.* (Y may later email
+   X, and notify them about their error, but Y MUST NOT respond
    with HTTP 4xx for such requests.)
 
  * Sending a request with a `GET` method, or sending a `POST` request with
    invalid content type, missing required parameters, missing authentication
    credentials, invalid HTTP signatures etc. - all these are "true" bad
-   requests. (Note however, that none of these errors depend on the IDs of the
+   requests. (Note that none of these errors depend on the IDs of the
    sent entities!)
 
 
@@ -681,17 +681,17 @@ There are a couple of reasons for this design:
  * In most EWP APIs we use the [master/slave][master-slave] communication
    model:
 
-   - The master serves its entities as they are (e.g. via the `get` endpoint
+   - The master serves its entities as they are (e.g., via the `get` endpoint
      of Outgoing Mobilities API). The master server can always be certain that
-     its data is up-to-date.
+     its data is up to date.
 
    - The slave, if he wants to change something, then he MUST do so directly
-     on the master server (e.g. by calling the `update` endpoint of his
+     on the master server (e.g., by calling the `update` endpoint of his
      Outgoing Mobilities API). The slave MAY keep a copy of the data, but he
      cannot just make changes to this copy without master's "approval".
 
    In this model, the slave can never be 100% sure that his copy of the
-   data is up-to-date. Conflicts are always possible (e.g. the slave is trying
+   data is up to date. Conflicts are always possible (e.g. the slave is trying
    to `UPDATE` an entity which has just been `DELETE`d from the master).
    **These conflicts need to be resolved by the slave.**
 
@@ -707,8 +707,8 @@ There are a couple of reasons for this design:
    objects**.
 
    EWP's "refresh" procedures are also known as "reload", "reset" or "re-sync"
-   procedures in database replication world, but the meaning is slightly
-   different. In our case we will *usually* want to refresh small sets of
+   procedures in the database replication world, but the meaning is slightly
+   different. In our case, we will *usually* want to refresh small sets of
    entities, rather than reloading all of them. A "full" refresh is only
    required after a slave system failure (when CNRs are not listening), or -
    periodically - if we suspect that the master implementation is flawed and
@@ -720,7 +720,7 @@ There are a couple of reasons for this design:
    the daemon implementers to keep **longer delivery-expiry timeout periods**.
 
  * When a single entity is changed multiple times in rapid succession (which is
-   a pretty common use case!), it is very simple to "merge" all such changes
+   a pretty common use case!), it is straightforward to "merge" all such changes
    into a single, tiny notification.
 
  * **Synchronization problems are quite easy to handle.** If change `N` reaches
@@ -735,7 +735,7 @@ There are a couple of reasons for this design:
 
  * It's **generally easier to implement for the sending party**. Generating
    more detailed notifications with diff-like descriptions of all the changed
-   properties is obviously a harder job, and it's often unnecessary (because,
+   properties is a harder job, and it's often unnecessary (because,
    due to possible network failures, this job will have to be repeated on the
    receiver's side anyway).
 
@@ -747,7 +747,7 @@ There are a couple of reasons for this design:
 As we have already mentioned above:
 
  * We can never be 100% sure that all CNR notifications were delivered.
- * There's always the possibility of CNR failure (i.e. the server is
+ * There's always the possibility of CNR failure (i.e., the server is
    temporarily down and cannot receive CNR notifications).
  * We need a way for "initial synchronization" (when we are starting from
    scratch, and we want to fetch the full set of changes).
@@ -756,10 +756,10 @@ For these reasons, clients will sometimes need to "refresh" their copy of
 the data. Some clients may do this every night, others might choose to do this
 only after some critical hardware failures.
 
-Most EWP APIs allow to achieve this effect by calling the `index` endpoint of
+Most EWP APIs allow achieving this effect by calling the `index` endpoint of
 an API (and thus retrieving the full list of current entity IDs), and then
 calling the `get` endpoint with all the retrieved IDs. This process may be
-costly, if the number of IDs is large. To prevent "DDoS-ing" each other's
+costly if the number of IDs is large. To prevent "DDoS-ing" each other's
 servers, most `index` endpoints allow the clients to use the `modified_since`
 parameter, which causes only a small subset of IDs to be returned by the server
 (only the ones that were actually changed since the specified date).
