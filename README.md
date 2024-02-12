@@ -47,10 +47,9 @@ Network":
    need any additional guidelines to join - the official EWP documentation
    should be enough.
 
-To join EWP Developer Network, contact the dev-registry's administrators. You
-will find their email addresses in the [dev-registry's catalogue
-response][dev-catalogue-xml] (and if you're not sure how to read this XML, then
-you should read the rest of this document first).
+To join EWP Developer Network,
+follow the procedure described in the [EWP Developers Guide][devel-guide],
+section "Joining the EWP Network".
 
 
 ### Implementing APIs
@@ -62,7 +61,7 @@ however, share any of **your** data yet - you'll need to implement some more
 APIs to do that.
 
 As part of the EWP project, we have designed a couple of APIs. Visit
-[EWP Developers Page][develhub] for more information.
+[EWP Developers Guide][devel-guide] for more information.
 
 
 <a name="components"></a>
@@ -797,7 +796,7 @@ stats.erasmuswithoutpaper.eu
 
 [api-specs]: https://esci-sd.atlassian.net/wiki/spaces/ITSC/pages/134184973/Documents+and+specifications
 [discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery
-[develhub]: http://developers.erasmuswithoutpaper.eu/
+[devel-guide]: http://developers.erasmuswithoutpaper.eu/
 [statuses]: https://github.com/erasmus-without-paper/ewp-specs-management/blob/stable-v1/README.md#statuses
 [registry]: https://registry.erasmuswithoutpaper.eu/
 [registry-api]: https://github.com/erasmus-without-paper/ewp-specs-api-registry
