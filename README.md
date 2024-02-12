@@ -36,11 +36,6 @@ Network":
 
  * EWP Developer Network is completely separated from the actual EWP Network.
 
- * It contains URLs of individual developers' workstations, which may become
-   offline at any time (developers are not required to keep their [discovery
-   files][discovery-api] as up-to-date as the administrators of the "real"
-   EWP Hosts are).
-
  * It may contain alpha implementations of unstable draft APIs.
 
  * It may contain references to non-existent HEIs. In fact, developers are
