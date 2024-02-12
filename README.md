@@ -434,17 +434,6 @@ However, what we can do is to RECOMMEND that such old entities should be kept
 online for at least some time before disappearing, so that all other partners
 can realize what is happening.
 
-**Example:**
-
- * If a mobility `X` is cancelled at the sending HEI `S`, and the receiving HEI
-   `R` is then asking for an update on `X`, then it is RECOMMENDED to respond
-   with a valid `X` mobility response **with the `cancelled` status**, rather
-   than returning HTTP 400 with the message "X does not exist".
-
- * Such cancelled mobilities can, of course, be removed later in time, but they
-   SHOULD NOT be removed instantly after they're cancelled. The same
-   recommendation applies to all other entities.
-
 
 <a name='backward-compatibility-rules'></a>
 
