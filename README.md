@@ -6,7 +6,7 @@ data types, and explains basic rules about how partners communicate with each
 other and handle errors.
 
 * [What is the status of this document?][statuses]
-* [See the index of all other EWP Specifications][develhub]
+* [See the index of all other EWP API specifications][api-specs]
 
 
 How to join the EWP Network?
@@ -795,6 +795,7 @@ Server MUST allow the EWP Stats Portal to access this endpoint. The EWP Stats Po
 stats.erasmuswithoutpaper.eu
 ```
 
+[api-specs]: https://esci-sd.atlassian.net/wiki/spaces/ITSC/pages/134184973/Documents+and+specifications
 [discovery-api]: https://github.com/erasmus-without-paper/ewp-specs-api-discovery
 [develhub]: http://developers.erasmuswithoutpaper.eu/
 [statuses]: https://github.com/erasmus-without-paper/ewp-specs-management/blob/stable-v1/README.md#statuses
