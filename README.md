@@ -171,7 +171,7 @@ That provides the means to always identify the HEI sending the request (caller).
 On the other side, to be able to identify the HEI being called,
 **the receiver MUST uniquely associate an API with a URL (endpoint)**.
 
-Manifests that don't respect above requirements SHOULD NOT be accepted in the network.
+Manifests that don't respect above requirements MUST NOT be accepted in the network.
 
 
 <a name='network-topologies'></a>
