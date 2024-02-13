@@ -219,7 +219,7 @@ guidelines to be followed - it is a per-API design decision. In other words,
 This chapter describes general error handling rules, which are followed by most
 of the EWP APIs whenever an error occurs.
 
-When encountering any errors, clients in the EWP Network MUST call the [Monitoring API][monitoring-api].
+When encountering any errors, clients in the EWP Network SHOULD call the [Monitoring API][monitoring-api].
 
  * If the service is **temporarily unavailable** for some reason (like
    maintenance), then servers MUST respond with the HTTP 5xx status
