@@ -537,7 +537,10 @@ CNR API (see *What constitutes a "bad CNR request"* section below).
 
 #### Client part (sending notifications)
 
-In principle, it seems simple - when an EWP Host `X` wants to broadcast a
+An EWP Host MUST send a notification once it detects a change in an entity
+that it publishes in the EWP network.
+
+In principle, it seems simple - when an EWP Host `X` needs to broadcast a
 notification, then:
 
  * It first asks the Registry Service for the URL of the related CNR API.
