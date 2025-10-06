@@ -756,12 +756,13 @@ By doing so, we are preventing lots of unnecessary network traffic!
 
 ### EWP Statistics
 
-Multiple APIs SHOULD implement an endpoint which returns multiple different statistics. Specific schemas and types of data
-to be returned are documented separately for each API. Currently, the APIs requiring statistics endpoint are:
+Multiple APIs SHOULD implement an endpoint or API which returns multiple different statistics. Specific schemas and types of data
+to be returned are documented separately for each API. Currently, the APIs requiring statistics are:
 
  * [IIA API][iia-api]
  * [Omobility LAs API][omobility-la-api]
  * [Omobility LAs CNR API][omobility-la-cnr-api] - This is intended for statistics about incoming LAs
+ * [Omobility Stats API][omobility-stats-api]
 
 Stats Portal will be gathering statistics periodically, on every 1st day of a month (starting from midnight).
 Nodes may calculate statistics on-line or off-line. If statistics are calculated off-line,
@@ -803,5 +804,6 @@ stats.erasmuswithoutpaper.eu
 [iia-api]: https://github.com/erasmus-without-paper/ewp-specs-api-iias
 [omobility-la-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-las
 [omobility-la-cnr-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-la-cnr
+[omobility-stats-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-stats
 [monitoring-api]: https://github.com/erasmus-without-paper/ewp-specs-api-monitoring
 
