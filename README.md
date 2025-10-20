@@ -764,7 +764,7 @@ to be returned are documented separately for each API. Currently, the APIs requi
  * [Omobility LAs CNR API][omobility-la-cnr-api] - This is intended for statistics about incoming LAs
  * [Omobility Stats API][omobility-stats-api]
 
-Stats Portal will be gathering statistics periodically, on every first day of the month (starting from midnight).
+Stats Portal will be gathering statistics periodically, on every first day of the month (starting from 8 p.m. CEST).
 Nodes may calculate statistics on-line or off-line. If statistics are calculated off-line,
 they should be as fresh as possible on the day of request.
 
