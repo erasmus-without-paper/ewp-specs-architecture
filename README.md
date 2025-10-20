@@ -756,7 +756,7 @@ By doing so, we are preventing lots of unnecessary network traffic!
 
 ### EWP Statistics
 
-Multiple APIs SHOULD implement an endpoint or API which returns multiple different statistics. Specific schemas and types of data
+There are some APIs exposing stats endpoints and some separate Stats APIs that return multiple different statistics. Specific schemas and types of data
 to be returned are documented separately for each API. Currently, the APIs requiring statistics are:
 
  * [IIA API][iia-api]
@@ -764,7 +764,7 @@ to be returned are documented separately for each API. Currently, the APIs requi
  * [Omobility LAs CNR API][omobility-la-cnr-api] - This is intended for statistics about incoming LAs
  * [Omobility Stats API][omobility-stats-api]
 
-Stats Portal will be gathering statistics periodically, on every 1st day of a month (starting from midnight).
+Stats Portal will be gathering statistics periodically, on every first day of the month (starting from midnight).
 Nodes may calculate statistics on-line or off-line. If statistics are calculated off-line,
 they should be as fresh as possible on the day of request.
 
@@ -773,7 +773,7 @@ Statistics will be gathered only from nodes implementing Discovery 6.0.0 or high
 If HEI changes provider, it should take data to the new provider and make them available in the network.
 This means in particular that all data should be included in the statistics provided by HEI from the new location.
 
-For LAs the smallest reported academic year should be 2021/2022. All earlier academic years, if present in data, will be skipped.
+For APIs providing data in the context of an academic year, the earliest reported academic year should be 2021/2022. All earlier academic years, if present in data, will be skipped.
 
 #### Response time
 
@@ -781,7 +781,7 @@ Server SHOULD respond as fast as possible. This is why it is recommended to calc
 
 #### Permissions
 
-Server MUST allow the EWP Stats Portal to access this endpoint. The EWP Stats Portal is identified by HEI id:
+Server MUST allow the EWP Stats Portal to access these endpoints. The EWP Stats Portal is identified by HEI id:
 
 ```
 stats.erasmuswithoutpaper.eu
