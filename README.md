@@ -763,6 +763,7 @@ to be returned are documented separately for each API. Currently, the APIs requi
  * [Omobility LAs API][omobility-la-api]
  * [Omobility LAs CNR API][omobility-la-cnr-api] - This is intended for statistics about incoming LAs
  * [Omobility Stats API][omobility-stats-api]
+ * [Imobility TORs Stats API][imobility-tor-stats-api]
 
 Stats Portal will be gathering statistics periodically, on every first day of the month (starting from 8 p.m. CEST).
 Nodes may calculate statistics on-line or off-line. If statistics are calculated off-line,
@@ -805,5 +806,6 @@ stats.erasmuswithoutpaper.eu
 [omobility-la-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-las
 [omobility-la-cnr-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-la-cnr
 [omobility-stats-api]: https://github.com/erasmus-without-paper/ewp-specs-api-omobility-stats
+[imobility-tor-stats-api]: https://github.com/erasmus-without-paper/ewp-specs-api-imobility-tor-stats
 [monitoring-api]: https://github.com/erasmus-without-paper/ewp-specs-api-monitoring
 
