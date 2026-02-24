@@ -319,6 +319,23 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="IscedFCode">
+        <xs:annotation>
+            <xs:documentation>
+                ISCED-F subject area code.
+
+                ISCED-F codes define fields of education and training at the secondary, post-secondary, and tertiary
+                levels of education. MUST be 4-digit code based on ISCED-F 2013 standards.
+
+                Details:
+                https://uis.unesco.org/sites/default/files/documents/isced-fields-of-education-and-training-2013-en.pdf
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="Gender">
         <xs:annotation>
             <xs:documentation>
